@@ -1,77 +1,98 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Text;
-using Il2CppSystem.IO;
 using PluralizeService.Core;
 using ProjectM;
-using ProjectM.Network;
-using Unity.Collections;
 using Unity.Entities;
 using VRising.GameData.ClassGenerator.Utils;
 using Wetstone.API;
 
 namespace VRising.GameData.ClassGenerator
 {
-    internal class ClassGenerator
+    internal static class ClassGenerator
     {
         private const string ModelsFolder = @"D:\VRising\Development\VRising.GameData\src\VRising.GameData\Models\Internals";
-        private static readonly Dictionary<string, ComponentType> RootTypes = new Dictionary<string, ComponentType>
-        {
-            { "UserModel", ComponentType.ReadOnly<User>() },
-            { "ItemModel", ComponentType.ReadOnly<ItemData>() },
-            { "NpcModel", ComponentType.ReadOnly<AggroConsumer>() },
-            { "CharacterModel", ComponentType.ReadOnly<PlayerCharacter>() },
-        };
+
         public static void GenerateClasses()
         {
             if (VWorld.IsServer)
             {
-                GenerateClasses(VWorld.Server);
+                //GenerateClasses(VWorld.Server);
+                //GenerateManagedTypeClasses(VWorld.Server);
             }
             else if (VWorld.IsClient)
             {
-                GenerateClasses(VWorld.Client);
+                //GenerateClasses(VWorld.Client);
+                GenerateManagedTypeClasses(VWorld.Client);
             }
+        }
+
+        private static void GenerateManagedTypeClasses(World world)
+        {
+            var managedDataRegistry = world.GetExistingSystem<GameDataSystem>().ManagedDataRegistry;
+            var allTypes = new HashSet<Type>();
+            foreach (var dataKV in managedDataRegistry._DataLookupMap)
+            {
+                allTypes.Add(Type.GetType(dataKV.value.GetIl2CppType().AssemblyQualifiedName));
+            }
+
+            var modelName = "BaseManagedDataModel";
+            var codeBuilder = new CodeBuilder();
+            codeBuilder.StartClassManaged(modelName);
+            foreach (var componentType in allTypes)
+            {
+                codeBuilder.AddManagedDataType(componentType);
+            }
+            codeBuilder.EndClass();
+            var destinationFilePath = Path.Combine(ModelsFolder, $"{modelName}.cs");
+            File.WriteAllText(destinationFilePath, codeBuilder.Build());
         }
 
         private static void GenerateClasses(World world)
         {
-            foreach (var (className, componentType) in RootTypes)
+            var allTypes = new Dictionary<string, ComponentType>();
+            var entities = world.EntityManager.GetAllEntities();
+            var count = entities.Length;
+            for (var i = 0; i < entities.Length; i++)
             {
-                var types = new Dictionary<string, ComponentType>();
-                var query = world.EntityManager.CreateEntityQuery(componentType);
-                var entities = query.ToEntityArray(Allocator.Temp);
-                foreach (var entity in entities)
+                if (i % 1000 == 0)
                 {
-                    var componentTypes = world.EntityManager.GetComponentTypes(entity);
-                    foreach (var type in componentTypes)
-                    {
-                        types[type.GetManagedType().AssemblyQualifiedName] = type;
-                    }
+                    Logger.LogInfo($"{i} / {count}");
                 }
-
-                var codeBuilder = new CodeBuilder(className);
-                foreach (var (name, type) in types)
+                var entity = entities[i];
+                var componentTypes = world.EntityManager.GetComponentTypes(entity);
+                foreach (var componentType in componentTypes)
                 {
-                    codeBuilder.Add(type);
+                    allTypes[componentType.GetManagedType().AssemblyQualifiedName] = componentType;
                 }
-                codeBuilder.EndClass();
-                var destinationFilePath = Path.Combine(ModelsFolder, $"{className}.cs");
-                File.WriteAllText(destinationFilePath, codeBuilder.Build());
             }
+
+            var modelName = "BaseEntityModel";
+            var codeBuilder = new CodeBuilder();
+            codeBuilder.StartClassEntity(modelName);
+            foreach (var componentType in allTypes.Values)
+            {
+                codeBuilder.Add(componentType);
+            }
+            codeBuilder.EndClass();
+            var destinationFilePath = Path.Combine(ModelsFolder, $"{modelName}.cs");
+            File.WriteAllText(destinationFilePath, codeBuilder.Build());
         }
     }
 
     public class CodeBuilder
     {
         private StringBuilder builder;
-        public CodeBuilder(string className)
+
+        public void StartClassEntity(string className)
         {
             builder = new StringBuilder($@"using System.Collections.Generic;
 using Unity.Entities;
 
 namespace VRising.GameData.Models.Internals
 {{
-    public partial class {className}
+    public class {className}
     {{
         private readonly World _world;
         private readonly Entity _entity;
@@ -80,6 +101,26 @@ namespace VRising.GameData.Models.Internals
         {{
             _world = world;
             _entity = entity;
+        }}
+");
+        }
+
+        public void StartClassManaged(string className)
+        {
+            builder = new StringBuilder($@"using System.Collections.Generic;
+using Unity.Entities;
+
+namespace VRising.GameData.Models.Internals
+{{
+    public class {className}
+    {{
+        private readonly World _world;
+        private readonly BaseEntityModel _entityModel;
+
+        internal {className}(World world, BaseEntityModel entityModel)
+        {{
+            _world = world;
+            _entityModel = entityModel;
         }}
 ");
         }
@@ -95,16 +136,29 @@ namespace VRising.GameData.Models.Internals
             }
             if (type.IsBuffer)
             {
-                builder.AppendLine($"        public List<{typeName}> {PluralizationProvider.Pluralize(name)} => _world.EntityManager.GetBuffer<{typeName}>(_entity).ToList();");
+                builder.AppendLine($"        public List<{typeName}> {PluralizationProvider.Pluralize(name)} => _world.EntityManager.GetBufferInternal<{typeName}>(_entity);");
             }
             else if (type.IsZeroSized)
             {
-                builder.AppendLine($"        public bool {name} => _world.EntityManager.HasComponent<{typeName}>(_entity);");
+                builder.AppendLine($"        public bool {name} => _world.EntityManager.HasComponentInternal<{typeName}>(_entity);");
             }
             else
             {
-                builder.AppendLine($"        public {typeName} {name} => _world.EntityManager.GetComponentData<{typeName}>(_entity);");
+                builder.AppendLine($"        public {typeName}? {name} => _world.EntityManager.TryGetComponentDataInternal<{typeName}>(_entity, out var value) ? value : null;");
             }
+        }
+
+        public void AddManagedDataType(Type type)
+        {
+            var typeName = type.FullName;
+            var name = type.Name;
+            if (typeName.Contains("+"))
+            {
+                return;
+            }
+
+            builder.AppendLine($"        public {typeName} {name} => _world.GetManagedComponentDataInternal<{typeName}>(_entityModel);");
+
         }
 
         public void EndClass()

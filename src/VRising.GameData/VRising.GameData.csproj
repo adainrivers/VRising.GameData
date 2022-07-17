@@ -14,6 +14,11 @@
     <PluginsPath>$(ServerPath)\BepinEx\plugins</PluginsPath>
     <WetstonePluginsPath>$(ServerPath)\BepinEx\WetstonePlugins</WetstonePluginsPath>
   </PropertyGroup>
+  <Target Name="CopyDLLs" AfterTargets="Build">
+    <Message Text="Executing CopyDLLs task" Importance="High" />
+    <Copy SourceFiles="$(TargetDir)$(ProjectName).dll;$(TargetDir)$(ProjectName).pdb" DestinationFolder="$(PluginsPath)" />
+    <Message Text="Copied build files" Importance="High" />
+  </Target>
   <ItemGroup>
     <PackageReference Include="BepInEx.IL2CPP" Version="6.0.0-*" IncludeAssets="compile" />
     <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />

@@ -20,8 +20,7 @@ namespace VRising.GameData
             {
                 if (_serverWorld != null) return _serverWorld;
 
-                _serverWorld = GetWorld("Server")
-                    ?? throw new System.Exception("There is no Server world (yet). Did you install a server mod on the client?");
+                _serverWorld = GetWorld("Server");
                 return _serverWorld;
             }
         }
@@ -35,8 +34,7 @@ namespace VRising.GameData
             {
                 if (_clientWorld != null) return _clientWorld;
 
-                _clientWorld = GetWorld("Client_0")
-                    ?? throw new System.Exception("There is no Client world (yet). Did you install a client mod on the server?");
+                _clientWorld = GetWorld("Client_0");
                 return _clientWorld;
             }
         }

@@ -4,6 +4,7 @@ using BepInEx.IL2CPP;
 using BepInEx.Logging;
 using HarmonyLib;
 using ProjectM;
+using UnhollowerRuntimeLib;
 using VRising.GameData.ClassGenerator.Patch;
 
 namespace VRising.GameData.ClassGenerator
@@ -25,6 +26,11 @@ namespace VRising.GameData.ClassGenerator
             Logger.LogInfo($"Plugin {PluginName} is loaded!");
             _harmonyInstance = new Harmony(PluginGuid);
             _harmonyInstance.PatchAll(typeof(ServerEvents));
+            if (!ClassInjector.IsTypeRegisteredInIl2Cpp<CreateGameDataClassesConsoleCommand>())
+            {
+                ClassInjector.RegisterTypeInIl2Cpp<CreateGameDataClassesConsoleCommand>();
+            }
+
 
             ServerEvents.OnServerStartupStateChanged += ServerEvents_OnServerStartupStateChanged;
         }

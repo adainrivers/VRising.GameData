@@ -3,6 +3,7 @@ using BepInEx.IL2CPP;
 using BepInEx.Logging;
 using HarmonyLib;
 using ProjectM;
+using VRising.GameData.Methods;
 using VRising.GameData.SamplePlugin.Patch;
 using Wetstone.API;
 using Wetstone.Hooks;
@@ -32,14 +33,14 @@ namespace VRising.GameData.SamplePlugin
 
         public void OnGameInitialized()
         {
-            GameData = new GameData();
+            _ = GameData.Instance;
         }
         private void Chat_OnChatMessage(VChatEvent e)
         {
             if (e.Message == "hello")
             {
                 var sender = GameData.UserData.GetUserFromEntity(e.SenderUserEntity);
-                sender.SendSystemMessage($"Hello {sender.Internal.User.CharacterName}. Your current chest armor is {sender.Character.Equipment.Chest.PrefabName}");
+                sender.SendSystemMessage($"Hello {sender.Internals.User.CharacterName}. Your current chest armor is {sender.Character.Equipment.Chest.PrefabName}");
             }
         }
 
@@ -47,11 +48,10 @@ namespace VRising.GameData.SamplePlugin
         {
             if (serverStartupState == ServerStartupState.State.SuccessfulStartup)
             {
-                GameData = new GameData();
-                var users = GameData.UserData.GetAllUsers();
+                var users = GameData.Instance.UserData.GetAllUsers();
                 foreach (var user in users)
                 {
-                    Logger.LogMessage($"{user.Internal.User.CharacterName} Connected: {user.Internal.User.IsConnected}");
+                    Logger.LogMessage($"{user.Internals.User.CharacterName} Connected: {user.Internals.User.IsConnected}");
                 }
             }
         }

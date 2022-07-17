@@ -1,29 +1,22 @@
-﻿using ProjectM;
-using Unity.Entities;
+﻿using Unity.Entities;
+using VRising.GameData.Models.Internals;
 
 namespace VRising.GameData.Models
 {
     public partial class UserModel
     {
-        private readonly World _world;
+        public readonly World World;
+        public readonly Entity Entity;
 
-        public Internals.UserModel Internal { get; }
-        public CharacterModel Character { get; }
+        public readonly BaseEntityModel Internals;
+        public readonly CharacterModel Character;
 
         internal UserModel(World world, Entity entity)
         {
-            _world = world;
-            Internal = new Internals.UserModel(world, entity);
-            Character = new CharacterModel(world, Internal.User.LocalCharacter._Entity);
-        }
-
-        public void SendSystemMessage(string message)
-        {
-            if (_world.IsClientWorld())
-            {
-                return;
-            }
-            ServerChatUtils.SendSystemMessageToClient(_world.EntityManager, Internal.User, message);
+            World = world;
+            Entity = entity;
+            Internals = new BaseEntityModel(world, entity);
+            Character = new CharacterModel(world, Internals.User.LocalCharacter._Entity);
         }
     }
 }

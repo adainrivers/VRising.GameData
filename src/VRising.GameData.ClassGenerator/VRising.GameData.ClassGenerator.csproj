@@ -9,9 +9,11 @@
       https://api.nuget.org/v3/index.json;
       https://nuget.bepinex.dev/v3/index.json;
     </RestoreSources>
+    <ClientPath>D:\SteamLibrary\steamapps\common\VRising</ClientPath>
     <ServerPath>D:\SteamLibrary\steamapps\common\VRising\VRising_Server</ServerPath>
     <UnhollowedDllsPath>$(ServerPath)\BepinEx\unhollowed</UnhollowedDllsPath>
     <PluginsPath>$(ServerPath)\BepinEx\plugins</PluginsPath>
+    <ClientPluginsPath>$(ClientPath)\BepinEx\plugins</ClientPluginsPath>
     <WetstonePluginsPath>$(ServerPath)\BepinEx\WetstonePlugins</WetstonePluginsPath>
   </PropertyGroup>
 
@@ -29,6 +31,7 @@
   <Target Name="CopyDLLs" AfterTargets="Build">
     <Message Text="Executing CopyDLLs task" Importance="High" />
     <Copy SourceFiles="$(TargetDir)$(ProjectName).dll;$(TargetDir)$(ProjectName).pdb" DestinationFolder="$(PluginsPath)" />
+    <Copy SourceFiles="$(TargetDir)$(ProjectName).dll;$(TargetDir)$(ProjectName).pdb" DestinationFolder="$(ClientPluginsPath)" />
     <Message Text="Copied build files" Importance="High" />
   </Target>
 

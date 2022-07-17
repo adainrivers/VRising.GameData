@@ -1,18 +1,19 @@
 ﻿using Unity.Entities;
+using VRising.GameData.Models.Internals;
 
 namespace VRising.GameData.Models;
 
 public partial class CharacterModel
 {
     private readonly World _world;
-    public Internals.CharacterModel Internal { get; }
-    
-    public EquipmentModel Equipment => new(_world, Internal.Equipment);
+    public BaseEntityModel Internals { get; }
+
+    public EquipmentModel Equipment => Internals.Equipment != null ? new(_world, Internals.Equipment.Value) : null;
 
     internal CharacterModel(World world, Entity entity)
     {
         _world = world;
-        Internal = new Internals.CharacterModel(world, entity);
+        Internals = new BaseEntityModel(world, entity);
 
     }
 }

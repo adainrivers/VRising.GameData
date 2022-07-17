@@ -1,19 +1,22 @@
 ﻿using Unity.Entities;
+using VRising.GameData.Models.Internals;
 using VRising.GameData.Utils;
 
 namespace VRising.GameData.Models;
 
 public partial class ItemModel
 {
-    private readonly World _world;
-    public Internals.ItemModel Internal { get; }
+    public readonly World World;
+    public BaseEntityModel Internals { get; }
+    public BaseManagedDataModel ManagedGameData { get; }
 
     public string PrefabName { get; }
 
     internal ItemModel(World world, Entity entity)
     {
-        _world = world;
-        Internal = new Internals.ItemModel(world, entity);
-        PrefabName = Internal.PrefabGUID.GetPrefabName(world);
+        World = world;
+        Internals = new BaseEntityModel(world, entity);
+        PrefabName = Internals.PrefabGUID?.GetPrefabName(world);
+        ManagedGameData = new BaseManagedDataModel(world, Internals);
     }
 }
