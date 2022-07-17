@@ -7,11 +7,10 @@ namespace VRising.GameData
         public GameData()
         {
             WorldData = new WorldData();
-            var world = WorldData.IsServer? WorldData.Server: WorldData.Client;
-            UsersData = new UsersData(world);
+            UserData = new UserData(WorldData.Current);
 
         }
         public WorldData WorldData { get; }
-        public UsersData UsersData { get; }
+        public UserData UserData { get; }
     }
 }

@@ -7,11 +7,11 @@ using VRising.GameData.Models;
 
 namespace VRising.GameData;
 
-public class UsersData
+public class UserData
 {
     private readonly World _world;
 
-    internal UsersData(World world)
+    internal UserData(World world)
     {
         _world = world;
     }

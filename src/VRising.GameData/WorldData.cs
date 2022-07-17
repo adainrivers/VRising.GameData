@@ -9,6 +9,8 @@ namespace VRising.GameData
         private World _clientWorld;
         private World _serverWorld;
 
+        public World Current => IsServer ? Server : Client;
+
         /// <summary>
         /// Return the Unity ECS World instance used on the server build of VRising.
         /// </summary>

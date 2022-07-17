@@ -9,7 +9,7 @@
       https://api.nuget.org/v3/index.json;
       https://nuget.bepinex.dev/v3/index.json;
     </RestoreSources>
-    <ServerPath>D:\SteamLibrary\steamapps\common\VRising</ServerPath>
+    <ServerPath>D:\SteamLibrary\steamapps\common\VRising\VRising_Server</ServerPath>
     <UnhollowedDllsPath>$(ServerPath)\BepinEx\unhollowed</UnhollowedDllsPath>
     <PluginsPath>$(ServerPath)\BepinEx\plugins</PluginsPath>
   </PropertyGroup>
@@ -19,6 +19,7 @@
     <PackageReference Include="Costura.Fody" Version="5.7.0">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Wetstone" Version="1.1.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VRising.GameData\VRising.GameData.csproj" />
