@@ -1,32 +1,30 @@
 ﻿using ProjectM;
-using Unity.Entities;
 using VRising.GameData.Models;
 
-namespace VRising.GameData;
-
-public class ItemData
+namespace VRising.GameData
 {
-    public readonly World World;
-
-    internal ItemData(World world)
+    public class ItemData
     {
-        World = world;
-    }
-
-    public ItemModel GetPrefabById(PrefabGUID prefabGuid)
-    {
-        try
+        internal ItemData()
         {
-            var entity = GameData.Systems.PrefabCollectionSystem.PrefabLookupMap[prefabGuid];
-            if (World.EntityManager.HasComponent<ItemModel>(entity))
+        }
+
+        public ItemModel GetPrefabById(PrefabGUID prefabGuid)
+        {
+            try
             {
-                return new ItemModel(World, entity);
+                var entity = GameData.Systems.PrefabCollectionSystem.PrefabLookupMap[prefabGuid];
+                if (GameData.World.EntityManager.HasComponent<ItemModel>(entity))
+                {
+                    return new ItemModel(entity);
+                }
             }
+            catch
+            {
+                // Prefab not found
+            }
+
+            return null;
         }
-        catch 
-        {
-            // Prefab not found
-        }
-        return null;
     }
 }

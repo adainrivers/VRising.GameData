@@ -4,17 +4,14 @@ using UnityEngine;
 namespace VRising.GameData
 {
     // Credit: https://github.com/molenzwiebel/Wetstone/blob/master/API/VWorld.cs
-    public class WorldData
+    internal class WorldData
     {
         private World _clientWorld;
         private World _serverWorld;
 
-        public World Current => IsServer ? Server : Client;
+        internal World Current => IsServer ? Server : Client;
 
-        /// <summary>
-        /// Return the Unity ECS World instance used on the server build of VRising.
-        /// </summary>
-        public World Server
+        internal World Server
         {
             get
             {
@@ -25,10 +22,7 @@ namespace VRising.GameData
             }
         }
 
-        /// <summary>
-        /// Return the Unity ECS World instance used on the client build of VRising.
-        /// </summary>
-        public World Client
+        internal World Client
         {
             get
             {
@@ -39,21 +33,11 @@ namespace VRising.GameData
             }
         }
 
-        /// <summary>
-        /// Return the default Unity ECS World instance. Both client and server use this
-        /// to store some "global" systems, like the InputSystem.
-        /// </summary>
-        public World Default => World.DefaultGameObjectInjectionWorld;
+        internal World Default => World.DefaultGameObjectInjectionWorld;
 
-        /// <summary>
-        /// Return whether we're currently running on the server build of VRising.
-        /// </summary>
-        public bool IsServer => Application.productName == "VRisingServer";
+        internal bool IsServer => Application.productName == "VRisingServer";
 
-        /// <summary>
-        /// Return whether we're currently running on the client build of VRising.
-        /// </summary>
-        public bool IsClient => Application.productName == "VRising";
+        internal bool IsClient => Application.productName == "VRising";
 
         private World GetWorld(string name)
         {

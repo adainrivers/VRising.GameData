@@ -5,7 +5,7 @@ using Unity.Entities;
 
 namespace VRising.GameData.Models.Internals
 {
-    internal static class DynamicBufferExtensions
+    internal static class Extensions
     {
         public static List<T> ToList<T>(this DynamicBuffer<T> bufferList) where T : new()
         {
@@ -47,11 +47,11 @@ namespace VRising.GameData.Models.Internals
             }
         }
 
-        public static bool TryGetComponentDataInternal<T>(this EntityManager entityManager, Entity entity, out T value) where T : new()
+        public static bool TryGetComponentDataInternal<T>(this EntityManager entityManager, Entity entity, out T value)
+            where T : new()
         {
             try
             {
-
                 value = entityManager.GetComponentData<T>(entity);
                 return true;
             }
@@ -71,6 +71,7 @@ namespace VRising.GameData.Models.Internals
                 return null;
                 ;
             }
+
             var managedDataRegistry = world.GetExistingSystem<GameDataSystem>().ManagedDataRegistry;
             return managedDataRegistry.GetOrDefault<T>(prefabGuid.Value);
         }

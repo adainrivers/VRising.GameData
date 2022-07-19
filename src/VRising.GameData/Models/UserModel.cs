@@ -1,22 +1,28 @@
-﻿using Unity.Entities;
-using VRising.GameData.Models.Internals;
+﻿using System;
+using ProjectM.Network;
+using ProjectM.Shared;
+using Unity.Entities;
+using Unity.Mathematics;
+using VRising.GameData.Utils;
 
 namespace VRising.GameData.Models
 {
-    public partial class UserModel
+    public partial class UserModel : EntityModel
     {
-        public readonly World World;
-        public readonly Entity Entity;
-
-        public readonly BaseEntityModel Internals;
-        public readonly CharacterModel Character;
-
-        internal UserModel(World world, Entity entity)
+        internal UserModel(Entity entity) : base(entity)
         {
-            World = world;
-            Entity = entity;
-            Internals = new BaseEntityModel(world, entity);
-            Character = new CharacterModel(world, Internals.User.LocalCharacter._Entity);
+            Character = new CharacterModel(Internals.User.LocalCharacter._Entity);
         }
+
+        public CharacterModel Character { get; }
+        public string CharacterName => Internals.User?.CharacterName.ToString();
+        public EquipmentModel Equipment => Character.Equipment;
+        public FromCharacter FromCharacter => new() { User = Entity, Character = Character.Entity };
+        public bool IsAdmin => Internals.User?.IsAdmin ?? false;
+        public bool IsConnected => Internals.User?.IsConnected ?? false;
+        public DateTime LastConnectedUtc => Internals.User?.TimeLastConnected.ToDateTime() ?? new DateTime();
+        public ulong PlatformId => Internals.User?.PlatformId ?? 0;
+        public float3 Position => Internals.LocalToWorld?.Position ?? new float3();
+        public UserContentFlags UserContent => Internals.User?.UserContent ?? UserContentFlags.None;
     }
 }

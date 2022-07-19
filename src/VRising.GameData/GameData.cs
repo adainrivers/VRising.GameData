@@ -1,47 +1,22 @@
 ﻿using System;
-using ProjectM;
 using Unity.Entities;
 
 namespace VRising.GameData
 {
     public class GameData
     {
-        private static GameData _instance;
-        public static GameData Instance => _instance ??= CreateInstance();
-        public static GameDataSystems Systems => new(Instance.WorldData.Current);
-
-        private static GameData CreateInstance()
+        public static void Initialize()
         {
             var worldData = new WorldData();
-            if (worldData.Current == null)
-            {
-                throw new Exception("World is not ready yet");
-            }
-            return new GameData();
+            World = worldData.Current ?? throw new Exception("World is not ready yet");
+            Users = new UserData();
+            Items = new ItemData();
+            Systems = new GameDataSystems();
         }
 
-        private GameData()
-        {
-            WorldData = new WorldData();
-            UserData = new UserData(WorldData.Current);
-            ItemData = new ItemData(WorldData.Current);
-        }
-
-        public WorldData WorldData { get; }
-        public UserData UserData { get; }
-        public ItemData ItemData { get; }
-    }
-
-    public class GameDataSystems
-    {
-        private readonly World _world;
-
-        internal GameDataSystems(World world)
-        {
-            _world = world;
-        }
-
-        public PrefabCollectionSystem PrefabCollectionSystem => _world.GetExistingSystem<PrefabCollectionSystem>();
-        public ManagedDataRegistry ManagedDataRegistry => _world.GetExistingSystem<GameDataSystem>().ManagedDataRegistry;
+        public static GameDataSystems Systems { get; private set; }
+        public static World World { get; private set; }
+        public static UserData Users { get; private set; }
+        public static ItemData Items { get; private set; }
     }
 }

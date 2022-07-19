@@ -6,47 +6,47 @@ using Unity.Collections;
 using Unity.Entities;
 using VRising.GameData.Models;
 
-namespace VRising.GameData;
-
-public class UserData
+namespace VRising.GameData
 {
-    public readonly World World;
-
-    internal UserData(World world)
+    public class UserData
     {
-        World = world;
-    }
-
-    public UserModel GetUserByPlatformId(ulong platformId)
-    {
-        return GetAllUsers().FirstOrDefault(u => u.Internals.User.PlatformId == platformId);
-    }
-
-    public UserModel GetUserByCharacterName(string characterName)
-    {
-        return GetAllUsers().FirstOrDefault(u => u.Internals.User.CharacterName.ToString() == characterName);
-    }
-
-    public UserModel GetUserFromEntity(Entity userEntity)
-    {
-        if (!World.EntityManager.HasComponent<User>(userEntity))
+        internal UserData()
         {
-            return null;
         }
-        return new UserModel(World, userEntity);
-    }
 
-    public IEnumerable<UserModel> GetOnlineUsers()
-    {
-        return GetAllUsers().Where(u => u.Internals.User.IsConnected);
-    }
-
-    public IEnumerable<UserModel> GetAllUsers()
-    {
-        var userEntities = World.EntityManager.CreateEntityQuery(ComponentType.ReadOnly<User>()).ToEntityArray(Allocator.Temp);
-        foreach (var userEntity in userEntities)
+        public UserModel GetUserByPlatformId(ulong platformId)
         {
-            yield return new UserModel(World, userEntity);
+            return GetAllUsers().FirstOrDefault(u => u.PlatformId == platformId);
+        }
+
+        public UserModel GetUserByCharacterName(string characterName)
+        {
+            return GetAllUsers().FirstOrDefault(u => u.CharacterName == characterName);
+        }
+
+        public UserModel GetUserFromEntity(Entity userEntity)
+        {
+            if (!GameData.World.EntityManager.HasComponent<User>(userEntity))
+            {
+                throw new Exception("Given entity does not have User component.");
+            }
+
+            return new UserModel(userEntity);
+        }
+
+        public IEnumerable<UserModel> GetOnlineUsers()
+        {
+            return GetAllUsers().Where(u => u.IsConnected);
+        }
+
+        public IEnumerable<UserModel> GetAllUsers()
+        {
+            var userEntities = GameData.World.EntityManager.CreateEntityQuery(ComponentType.ReadOnly<User>())
+                .ToEntityArray(Allocator.Temp);
+            foreach (var userEntity in userEntities)
+            {
+                yield return GetUserFromEntity(userEntity);
+            }
         }
     }
 }

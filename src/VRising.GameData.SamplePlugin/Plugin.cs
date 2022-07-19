@@ -11,7 +11,7 @@ using Wetstone.Hooks;
 namespace VRising.GameData.SamplePlugin
 {
     [BepInPlugin(PluginGuid, PluginName, PluginVersion)]
-    public class Plugin : BasePlugin, IRunOnInitialized
+    public class Plugin : BasePlugin
     {
         public const string PluginGuid = "VRising.GameData.SamplePlugin";
         public const string PluginName = "VRising.GameData.SamplePlugin";
@@ -31,16 +31,12 @@ namespace VRising.GameData.SamplePlugin
             Chat.OnChatMessage += Chat_OnChatMessage;
         }
 
-        public void OnGameInitialized()
-        {
-            _ = GameData.Instance;
-        }
         private void Chat_OnChatMessage(VChatEvent e)
         {
             if (e.Message == "hello")
             {
                 var sender = GameData.UserData.GetUserFromEntity(e.SenderUserEntity);
-                sender.SendSystemMessage($"Hello {sender.Internals.User.CharacterName}. Your current chest armor is {sender.Character.Equipment.Chest.PrefabName}");
+                sender.SendSystemMessage($"Hello {sender.CharacterName}. Your current chest armor is {sender.Equipment.Chest.PrefabName}");
             }
         }
 
@@ -48,10 +44,10 @@ namespace VRising.GameData.SamplePlugin
         {
             if (serverStartupState == ServerStartupState.State.SuccessfulStartup)
             {
-                var users = GameData.Instance.UserData.GetAllUsers();
-                foreach (var user in users)
+                var users = GameData.UserData.GetAllUsers();
+                foreach (var userModel in users)
                 {
-                    Logger.LogMessage($"{user.Internals.User.CharacterName} Connected: {user.Internals.User.IsConnected}");
+                    Logger.LogMessage($"{userModel.CharacterName} Connected: {userModel.IsConnected}");
                 }
             }
         }

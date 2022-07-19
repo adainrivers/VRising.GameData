@@ -1,21 +1,75 @@
 ﻿using System;
+using System.Collections.Generic;
 using ProjectM;
+using Unity.Collections;
 using Unity.Entities;
+using Unity.Mathematics;
+using VRising.GameData.Models;
+using VRising.GameData.Models.Internals;
 
 namespace VRising.GameData.Utils
 {
-    internal static class ExtensionMethods
+    public static class ExtensionMethods
     {
-        internal static string GetPrefabName(this PrefabGUID prefabGuid, World world)
+        public static string GetPrefabName(this PrefabGUID prefabGuid)
         {
             try
             {
-                return world.GetExistingSystem<PrefabCollectionSystem>().PrefabNameLookupMap[prefabGuid].ToString();
+                return GameData.Systems.PrefabCollectionSystem.PrefabNameLookupMap[prefabGuid].ToString();
             }
-            catch (Exception e)
+            catch
             {
                 return null;
             }
+        }
+
+        public static IEnumerable<BaseEntityModel> ToEnumerable(this EntityQuery entityQuery)
+        {
+            var entities = entityQuery.ToEntityArray(Allocator.Temp);
+            foreach (var entity in entities)
+            {
+                yield return new BaseEntityModel(GameData.World, entity);
+            }
+        }
+
+        //private static IEnumerable<T> AsEnumerable<T>(this EntityQuery entityQuery) where T : EntityModel
+        //{
+        //    var entities = entityQuery.ToEntityArray(Allocator.Temp);
+        //    foreach (var entity in entities)
+        //    {
+        //        if (typeof(T) == typeof(NpcModel))
+        //        {
+        //            yield return new NpcModel(entity) as T;
+        //        }
+        //        if (typeof(T) == typeof(UserModel))
+        //        {
+        //            yield return new UserModel(entity) as T;
+        //        }
+        //        if (typeof(T) == typeof(ItemModel))
+        //        {
+        //            yield return new ItemModel(entity) as T;
+        //        }
+        //    }
+        //}
+
+        public static IEnumerable<NpcModel> AsNpcs(this EntityQuery entityQuery) 
+        {
+            var entities = entityQuery.ToEntityArray(Allocator.Temp);
+            foreach (var entity in entities)
+            {
+                yield return new NpcModel(entity);
+            }
+        }
+
+        public static DateTime ToDateTime(this long unixDateTime)
+        {
+            var start = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            return start.AddMilliseconds(unixDateTime);
+        }
+
+        public static double Distance(this float3 pos1, float3 pos2)
+        {
+            return Math.Sqrt((Math.Pow(pos1.x - pos2.x, 2) + Math.Pow(pos1.z - pos2.z, 2)));
         }
     }
 }
