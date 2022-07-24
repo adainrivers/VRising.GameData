@@ -11,14 +11,13 @@ using Wetstone.Hooks;
 namespace VRising.GameData.SamplePlugin
 {
     [BepInPlugin(PluginGuid, PluginName, PluginVersion)]
-    public class Plugin : BasePlugin
+    public class Plugin : BasePlugin, IRunOnInitialized
     {
         public const string PluginGuid = "VRising.GameData.SamplePlugin";
         public const string PluginName = "VRising.GameData.SamplePlugin";
         public const string PluginVersion = "0.1.0";
         internal static ManualLogSource Logger { get; private set; }
         private static Harmony _harmonyInstance;
-        public static GameData GameData;
 
         public override void Load()
         {
@@ -35,7 +34,7 @@ namespace VRising.GameData.SamplePlugin
         {
             if (e.Message == "hello")
             {
-                var sender = GameData.UserData.GetUserFromEntity(e.SenderUserEntity);
+                var sender = GameData.Users.GetUserFromEntity(e.SenderUserEntity);
                 sender.SendSystemMessage($"Hello {sender.CharacterName}. Your current chest armor is {sender.Equipment.Chest.PrefabName}");
             }
         }
@@ -44,7 +43,7 @@ namespace VRising.GameData.SamplePlugin
         {
             if (serverStartupState == ServerStartupState.State.SuccessfulStartup)
             {
-                var users = GameData.UserData.GetAllUsers();
+                var users = GameData.Users.GetAllUsers();
                 foreach (var userModel in users)
                 {
                     Logger.LogMessage($"{userModel.CharacterName} Connected: {userModel.IsConnected}");
@@ -57,6 +56,11 @@ namespace VRising.GameData.SamplePlugin
             _harmonyInstance?.UnpatchSelf();
             Logger.LogInfo($"Plugin {PluginGuid} is unloaded!");
             return true;
+        }
+
+        public void OnGameInitialized()
+        {
+            GameData.Initialize();
         }
     }
 }

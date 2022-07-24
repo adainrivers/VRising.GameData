@@ -14,14 +14,14 @@
     <UnhollowedDllsPath>$(ServerPath)\BepinEx\unhollowed</UnhollowedDllsPath>
     <PluginsPath>$(ServerPath)\BepinEx\plugins</PluginsPath>
     <WetstonePluginsPath>$(ServerPath)\BepinEx\WetstonePlugins</WetstonePluginsPath>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <!--<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Description>An extensible framework to access V Rising ECS data</Description>
     <PackageProjectUrl>https://github.com/adainrivers/VRising.GameData</PackageProjectUrl>
-    <PackageIcon>worker2.png</PackageIcon>
+    <PackageIcon>icon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/adainrivers/VRising.GameData</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageLicenseFile>D:\VRising\Development\VRising.GameData\LICENSE</PackageLicenseFile>
+    <PackageLicenseFile>..\..\..\LICENSE</PackageLicenseFile>-->
   </PropertyGroup>
   <Target Name="CopyDLLs" AfterTargets="Build">
     <Message Text="Executing CopyDLLs task" Importance="High" />
@@ -30,10 +30,6 @@
   </Target>
   <ItemGroup>
     <None Include="..\..\README.md">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-    <None Include="C:\Users\menna\Pictures\worker2.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
