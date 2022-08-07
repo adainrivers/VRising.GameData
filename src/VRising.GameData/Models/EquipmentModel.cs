@@ -1,5 +1,4 @@
-﻿using ProjectM;
-using Unity.Entities;
+﻿using Unity.Entities;
 
 namespace VRising.GameData.Models
 {

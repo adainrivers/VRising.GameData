@@ -15,5 +15,10 @@ namespace VRising.GameData.Models
         public BaseManagedDataModel ManagedGameData { get; }
 
         public string PrefabName { get; }
+        public string Name => ManagedGameData?.ManagedItemData?.Name.ToString();
+
+        public ItemCategory ItemCategory => Internals.ItemData?.ItemCategory ?? ItemCategory.NONE;
+        public ItemType ItemType => Internals.ItemData?.ItemType ?? 0;
+        public EquipmentType EquipmentType => Internals.EquippableData?.EquipmentType ?? EquipmentType.None;
     }
 }

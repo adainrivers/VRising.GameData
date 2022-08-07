@@ -8,9 +8,9 @@ using VRising.GameData.Models;
 
 namespace VRising.GameData
 {
-    public class UserData
+    public class Users
     {
-        internal UserData()
+        internal Users()
         {
         }
 

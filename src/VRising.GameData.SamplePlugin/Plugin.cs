@@ -1,66 +1,51 @@
-﻿using BepInEx;
+﻿global using ProjectM;
+using System.Linq;
+using BepInEx;
 using BepInEx.IL2CPP;
 using BepInEx.Logging;
-using HarmonyLib;
-using ProjectM;
-using VRising.GameData.Methods;
-using VRising.GameData.SamplePlugin.Patch;
-using Wetstone.API;
-using Wetstone.Hooks;
 
 namespace VRising.GameData.SamplePlugin
 {
-    [BepInPlugin(PluginGuid, PluginName, PluginVersion)]
-    public class Plugin : BasePlugin, IRunOnInitialized
+    [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
+    public class Plugin : BasePlugin
     {
-        public const string PluginGuid = "VRising.GameData.SamplePlugin";
-        public const string PluginName = "VRising.GameData.SamplePlugin";
-        public const string PluginVersion = "0.1.0";
+        internal static string Name = PluginInfo.PLUGIN_NAME;
+        internal static string Guid = PluginInfo.PLUGIN_GUID;
+        internal static string Version = PluginInfo.PLUGIN_VERSION;
         internal static ManualLogSource Logger { get; private set; }
-        private static Harmony _harmonyInstance;
 
         public override void Load()
         {
             Logger = Log;
-            Logger.LogInfo($"Plugin {PluginName} is loaded!");
-            _harmonyInstance = new Harmony(PluginGuid);
-            _harmonyInstance.PatchAll(typeof(ServerEvents));
-
-            ServerEvents.OnServerStartupStateChanged += ServerEvents_OnServerStartupStateChanged;
-            Chat.OnChatMessage += Chat_OnChatMessage;
+            Logger.LogInfo($"Plugin {Name} {Version} is loaded!");
+            GameData.Initialize();
+            GameData.OnInitialize += GameDataOnInitialize;
         }
 
-        private void Chat_OnChatMessage(VChatEvent e)
+        private static void GameDataOnInitialize()
         {
-            if (e.Message == "hello")
+            GameData.OnInitialize -= GameDataOnInitialize;
+
+            var users = GameData.Users.GetAllUsers();
+            Logger.LogMessage("All Users");
+            foreach (var userModel in users)
             {
-                var sender = GameData.Users.GetUserFromEntity(e.SenderUserEntity);
-                sender.SendSystemMessage($"Hello {sender.CharacterName}. Your current chest armor is {sender.Equipment.Chest.PrefabName}");
+                Logger.LogMessage($"{userModel.CharacterName} Connected: {userModel.IsConnected}");
             }
-        }
 
-        private void ServerEvents_OnServerStartupStateChanged(LoadPersistenceSystemV2 sender, ServerStartupState.State serverStartupState)
-        {
-            if (serverStartupState == ServerStartupState.State.SuccessfulStartup)
+            var weapons = GameData.Items.Weapons.Take(10);
+            Logger.LogMessage("Some Weapons");
+            foreach (var itemModel in weapons)
             {
-                var users = GameData.Users.GetAllUsers();
-                foreach (var userModel in users)
-                {
-                    Logger.LogMessage($"{userModel.CharacterName} Connected: {userModel.IsConnected}");
-                }
+                Logger.LogMessage($"{itemModel.Name}");
             }
         }
 
         public override bool Unload()
         {
-            _harmonyInstance?.UnpatchSelf();
-            Logger.LogInfo($"Plugin {PluginGuid} is unloaded!");
+            GameData.Destroy();
+            Logger.LogInfo($"Plugin {Name} {Version} is unloaded!");
             return true;
-        }
-
-        public void OnGameInitialized()
-        {
-            GameData.Initialize();
         }
     }
 }

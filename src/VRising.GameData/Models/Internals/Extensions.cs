@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using ProjectM;
+﻿using System.Collections.Generic;
 using Unity.Entities;
 
 namespace VRising.GameData.Models.Internals

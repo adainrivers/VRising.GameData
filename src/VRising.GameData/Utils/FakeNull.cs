@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace VRising.GameData.Utils
+﻿namespace VRising.GameData.Utils
 {
     struct FakeNull
     {
