@@ -13,13 +13,19 @@ internal static class ClientEvents
     {
         if (_onGameDataInitializedTriggered)
         {
+            if (!__instance.GameDataInitialized)
+            {
+                // Reset state if game date is no longer initialized
+                _onGameDataInitializedTriggered = false;
+            }
             return;
         }
+
         try
         {
             if (!__instance.GameDataInitialized) return;
             _onGameDataInitializedTriggered= true;
-            OnGameDataInitialized?.Invoke();
+            OnGameDataInitialized?.Invoke(__instance.World);
         }
         catch
         {

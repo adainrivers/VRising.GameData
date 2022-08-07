@@ -5,7 +5,7 @@ using VRising.GameData.Patch;
 
 namespace VRising.GameData;
 
-public delegate void OnGameDataInitializedEventHandler();
+public delegate void OnGameDataInitializedEventHandler(World world);
 
 public class GameData
 {
@@ -20,7 +20,7 @@ public class GameData
     private static Harmony _harmonyInstance;
     private static WorldData _worldData;
 
-    public static void Initialize()
+    public static void Create()
     {
         _harmonyInstance = new Harmony("VRising.GameData");
         _worldData = new WorldData();
@@ -63,14 +63,14 @@ public class GameData
         _harmonyInstance = null;
     }
 
-    private static void OnGameDataInitialized()
+    private static void OnGameDataInitialized(World world)
     {
-        World = _worldData.Current;
+        World = world;
         Users = new Users();
         Items = new Items();
         Npcs = new Npcs();
         Systems = new GameDataSystems();
-        OnInitialize?.Invoke();
+        OnInitialize?.Invoke(world);
     }
 
 

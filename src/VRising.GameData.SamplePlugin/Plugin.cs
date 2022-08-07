@@ -1,8 +1,8 @@
-﻿global using ProjectM;
-using System.Linq;
+﻿using System.Linq;
 using BepInEx;
 using BepInEx.IL2CPP;
 using BepInEx.Logging;
+using Unity.Entities;
 
 namespace VRising.GameData.SamplePlugin
 {
@@ -18,23 +18,20 @@ namespace VRising.GameData.SamplePlugin
         {
             Logger = Log;
             Logger.LogInfo($"Plugin {Name} {Version} is loaded!");
-            GameData.Initialize();
+            GameData.Create();
             GameData.OnInitialize += GameDataOnInitialize;
         }
 
-        private static void GameDataOnInitialize()
+        private static void GameDataOnInitialize(World world)
         {
-            GameData.OnInitialize -= GameDataOnInitialize;
-
-            var users = GameData.Users.GetAllUsers();
-            Logger.LogMessage("All Users");
-            foreach (var userModel in users)
+            Logger.LogWarning("All Users:");
+            foreach (var userModel in GameData.Users.All)
             {
                 Logger.LogMessage($"{userModel.CharacterName} Connected: {userModel.IsConnected}");
             }
 
             var weapons = GameData.Items.Weapons.Take(10);
-            Logger.LogMessage("Some Weapons");
+            Logger.LogWarning("Some Weapons:");
             foreach (var itemModel in weapons)
             {
                 Logger.LogMessage($"{itemModel.Name}");
@@ -43,6 +40,7 @@ namespace VRising.GameData.SamplePlugin
 
         public override bool Unload()
         {
+            GameData.OnInitialize -= GameDataOnInitialize;
             GameData.Destroy();
             Logger.LogInfo($"Plugin {Name} {Version} is unloaded!");
             return true;
