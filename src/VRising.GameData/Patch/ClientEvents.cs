@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using System.Diagnostics;
+using HarmonyLib;
 
 namespace VRising.GameData.Patch;
 
@@ -11,10 +12,13 @@ internal static class ClientEvents
     [HarmonyPostfix]
     private static void GameDataManagerOnUpdatePostfix(GameDataManager __instance)
     {
+        Debug.WriteLine("GameDataManagerOnUpdatePostfix Start");
         if (_onGameDataInitializedTriggered)
         {
+            Debug.WriteLine("GameDataManagerOnUpdatePostfix _onGameDataInitializedTriggered");
             if (!__instance.GameDataInitialized)
             {
+                Debug.WriteLine("GameDataManagerOnUpdatePostfix !__instance.GameDataInitialized");
                 // Reset state if game date is no longer initialized
                 _onGameDataInitializedTriggered = false;
             }
@@ -23,8 +27,14 @@ internal static class ClientEvents
 
         try
         {
-            if (!__instance.GameDataInitialized) return;
-            _onGameDataInitializedTriggered= true;
+            if (!__instance.GameDataInitialized)
+            {
+                Debug.WriteLine("GameDataManagerOnUpdatePostfix !__instance.GameDataInitialized (2)");
+                return;
+            }
+
+            _onGameDataInitializedTriggered = true;
+            Debug.WriteLine("GameDataManagerOnUpdatePostfix Trigger");
             OnGameDataInitialized?.Invoke(__instance.World);
         }
         catch

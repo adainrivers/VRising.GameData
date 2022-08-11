@@ -15,6 +15,7 @@ internal static class ServerEvents
             if (loadState == ServerStartupState.State.SuccessfulStartup)
             {
                 OnGameDataInitialized?.Invoke(__instance.World);
+                OnGameDataInitialized = null;
             }
         }
         catch

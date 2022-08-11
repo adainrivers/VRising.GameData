@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <Version>0.1.1</Version>
+    <Version>0.2.1</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
     <Nullable>disable</Nullable>
@@ -14,15 +14,17 @@
     <UnhollowedDllsPath>$(ServerPath)\BepinEx\unhollowed</UnhollowedDllsPath>
     <PluginsPath>$(ServerPath)\BepinEx\plugins</PluginsPath>
     <WetstonePluginsPath>$(ServerPath)\BepinEx\WetstonePlugins</WetstonePluginsPath>
-    <!--<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Description>An extensible framework to access V Rising ECS data</Description>
     <PackageProjectUrl>https://github.com/adainrivers/VRising.GameData</PackageProjectUrl>
-    <PackageIcon>icon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/adainrivers/VRising.GameData</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageLicenseFile>..\..\..\LICENSE</PackageLicenseFile>-->
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>Icon.png</PackageIcon>
+    <Title>$(AssemblyName)</Title>
   </PropertyGroup>
+
   <Target Name="CopyDLLs" AfterTargets="Build">
     <Message Text="Executing CopyDLLs task" Importance="High" />
     <Copy SourceFiles="$(TargetDir)$(ProjectName).dll;$(TargetDir)$(ProjectName).pdb" DestinationFolder="$(PluginsPath)" />
@@ -30,6 +32,12 @@
   </Target>
   <ItemGroup>
     <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icon.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
@@ -152,18 +160,5 @@
     <Reference Include="Stunlock.Core">
       <HintPath>$(UnhollowedDllsPath)\Stunlock.Core.dll</HintPath>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
 </Project>

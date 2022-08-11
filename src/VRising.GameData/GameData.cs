@@ -1,6 +1,7 @@
 ﻿global using ProjectM;
 using HarmonyLib;
 using Unity.Entities;
+using UnityEngine;
 using VRising.GameData.Patch;
 
 namespace VRising.GameData;
@@ -9,6 +10,9 @@ public delegate void OnGameDataInitializedEventHandler(World world);
 
 public class GameData
 {
+    public static bool IsServer = Application.productName == "VRisingServer";
+    public static bool IsClient = Application.productName == "VRising";
+
     public static event OnGameDataInitializedEventHandler OnInitialize;
 
     public static GameDataSystems Systems { get; private set; }
@@ -18,20 +22,20 @@ public class GameData
     public static Npcs Npcs { get; private set; }
 
     private static Harmony _harmonyInstance;
-    private static WorldData _worldData;
+
 
     public static void Create()
     {
         _harmonyInstance = new Harmony("VRising.GameData");
-        _worldData = new WorldData();
 
-        if (_worldData.IsClient)
+
+        if (IsClient)
         {
             _harmonyInstance.PatchAll(typeof(ClientEvents));
             ClientEvents.OnGameDataInitialized += OnGameDataInitialized;
         }
 
-        if (_worldData.IsServer)
+        if (IsServer)
         {
             _harmonyInstance.PatchAll(typeof(ServerEvents));
             ServerEvents.OnGameDataInitialized += OnGameDataInitialized;
@@ -47,17 +51,15 @@ public class GameData
         Systems = null;
         
         OnInitialize = null;
-        if (_worldData.IsClient)
+        if (IsClient)
         {
             ClientEvents.OnGameDataInitialized -= OnGameDataInitialized;
         }
 
-        if (_worldData.IsServer)
+        if (IsServer)
         {
             ServerEvents.OnGameDataInitialized -= OnGameDataInitialized;
         }
-
-        _worldData = null;
         
         _harmonyInstance.UnpatchSelf();
         _harmonyInstance = null;

@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>VRising.GameData</id>
+    <title>VRising.GameData</title>
+    <version>0.1.1</version>
+    <authors>VRising.GameData</authors>
+    <readme>README.md</readme>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/adainrivers/VRising.GameData</projectUrl>
+    <description>An extensible framework to access V Rising ECS data</description>
+    <repository type="git" url="https://github.com/adainrivers/VRising.GameData" />
+    <dependencies>
+      <group targetFramework=".NETStandard2.1">
+        <dependency id="BepInEx.IL2CPP" version="6.0.0-be.574" exclude="Runtime,Build,Native,Analyzers,BuildTransitive" />
+        <dependency id="BepInEx.PluginInfoProps" version="1.1.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

@@ -1,12 +1,28 @@
-﻿using Unity.Entities;
+﻿using System;
+using System.Collections.Generic;
+using Unity.Entities;
 using Unity.Mathematics;
 
 namespace VRising.GameData.Models
 {
     public partial class NpcModel: EntityModel
     {
+        private readonly HashSet<UnitCategory> _npcCategories = new()
+        {
+            UnitCategory.Beast,
+            UnitCategory.Demon,
+            UnitCategory.Human,
+            UnitCategory.Undead,
+            UnitCategory.Mechanical
+        };
+
         internal NpcModel(Entity entity) : base(entity)
         {
+            var entityCategory = Internals.EntityCategory;
+            if (entityCategory == null || entityCategory.Value.MainCategory != MainEntityCategory.Unit || !_npcCategories.Contains(entityCategory.Value.UnitCategory))
+            {
+                throw new Exception("Given entity is not a NPC.");
+            }
         }
 
         public PrefabGUID PrefabGUID => Internals.PrefabGUID ?? new PrefabGUID();
