@@ -1,3 +1,5 @@
+# Still WIP, use it at your own risk.
+
 # VRising Game Data Library
 
 See [V Rising Database](https://gaming.tools/v-rising) for detailed information about V Rising items, NPCs and more.
@@ -5,23 +7,6 @@ See [V Rising Database](https://gaming.tools/v-rising) for detailed information 
 ## Installation
 
 Install the NuGet package `VRising.GameData`
-
-## Distribution
-
-You can embed the library using https://github.com/Fody/Costura.
-
-- Add `Costura.Fody` NuGet package to your project.
-- Update your FodyWeavers.xml to look like this:
-```xml
-<Weavers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="FodyWeavers.xsd">
-  <Costura>
-    <IncludeAssemblies>
-      VRising.GameData
-    </IncludeAssemblies>
-  </Costura>
-</Weavers>
-```
-- Build your plugin and you are done.
 
 ## Usage
 
