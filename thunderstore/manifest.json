@@ -1,0 +1,9 @@
+{
+  "name": "VRising_GameData",
+  "version_number": "0.2.2",
+  "website_url": "https://github.com/adainrivers/VRising.GameData",
+  "description": "Game data framework and general utilities for V Rising mods.",
+  "dependencies": [
+    "BepInEx-BepInExPack_V_Rising-1.0.0"
+  ]
+}
