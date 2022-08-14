@@ -1,38 +1,49 @@
 ﻿global using ProjectM;
-using HarmonyLib;
+using System;
 using Unity.Entities;
+using HarmonyLib;
 using UnityEngine;
 using VRising.GameData.Patch;
 
 namespace VRising.GameData;
 
 public delegate void OnGameDataInitializedEventHandler(World world);
+public delegate void OnGameDataDestroyedEventHandler();
 
-public class GameData
+public static class GameData
 {
+    private static bool _initialized;
+
+    private const string NotInitializedError = "GameData is not initialized";
+
     public static bool IsServer = Application.productName == "VRisingServer";
     public static bool IsClient = Application.productName == "VRising";
 
-    public static event OnGameDataInitializedEventHandler OnInitialize;
+    public static GameVersionData GameVersion => GameVersionUtils.GetVersionData();
 
-    public static GameDataSystems Systems { get; private set; }
-    public static World World { get; private set; }
-    public static Users Users { get; private set; }
-    public static Items Items { get; private set; }
-    public static Npcs Npcs { get; private set; }
+    public static event OnGameDataInitializedEventHandler OnInitialize;
+    public static event OnGameDataDestroyedEventHandler OnDestroy;
+
+    private static World _world;
+    public static World World => _world ?? throw new InvalidOperationException(NotInitializedError);
+
+    public static Systems Systems => _initialized ? Systems.Instance : throw new InvalidOperationException(NotInitializedError);
+    public static Users Users => _initialized ? Users.Instance : throw new InvalidOperationException(NotInitializedError);
+    public static Items Items => _initialized ? Items.Instance : throw new InvalidOperationException(NotInitializedError);
+    public static Npcs Npcs => _initialized ? Npcs.Instance : throw new InvalidOperationException(NotInitializedError);
 
     private static Harmony _harmonyInstance;
 
 
-    public static void Create()
+    internal static void Create()
     {
-        _harmonyInstance = new Harmony("VRising.GameData");
-
+        _harmonyInstance = new Harmony(Plugin.Guid);
 
         if (IsClient)
         {
             _harmonyInstance.PatchAll(typeof(ClientEvents));
             ClientEvents.OnGameDataInitialized += OnGameDataInitialized;
+            ClientEvents.OnGameDataDestroyed += OnGameDataDestroyed;
         }
 
         if (IsServer)
@@ -42,14 +53,8 @@ public class GameData
         }
     }
 
-    public static void Destroy()
+    internal static void Destroy()
     {
-        World = null;
-        Users = null;
-        Items = null;
-        Npcs = null;
-        Systems = null;
-        
         OnInitialize = null;
         if (IsClient)
         {
@@ -60,20 +65,51 @@ public class GameData
         {
             ServerEvents.OnGameDataInitialized -= OnGameDataInitialized;
         }
-        
+
         _harmonyInstance.UnpatchSelf();
         _harmonyInstance = null;
     }
 
-    private static void OnGameDataInitialized(World world)
+    private static void OnGameDataDestroyed()
     {
-        World = world;
-        Users = new Users();
-        Items = new Items();
-        Npcs = new Npcs();
-        Systems = new GameDataSystems();
-        OnInitialize?.Invoke(world);
+        _world = null;
+        _initialized = false;
+        OnDestroy?.Invoke();
+        if (OnDestroy == null)
+        {
+            return;
+        }
+        foreach (var hook in OnDestroy.GetInvocationList())
+        {
+            try
+            {
+                hook.DynamicInvoke();
+            }
+            catch (Exception e)
+            {
+                Plugin.Logger.LogError(e);
+            }
+        }
     }
 
-
+    private static void OnGameDataInitialized(World world)
+    {
+        _world = world;
+        _initialized = true;
+        if (OnInitialize == null)
+        {
+            return;
+        }
+        foreach (var hook in OnInitialize.GetInvocationList())
+        {
+            try
+            {
+                hook.DynamicInvoke(world);
+            }
+            catch (Exception e)
+            {
+                Plugin.Logger.LogError(e);
+            }
+        }
+    }
 }

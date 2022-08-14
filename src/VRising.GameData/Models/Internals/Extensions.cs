@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Unity.Entities;
 
 namespace VRising.GameData.Models.Internals
@@ -27,7 +28,7 @@ namespace VRising.GameData.Models.Internals
             {
                 return entityManager.GetBuffer<T>(entity).ToList();
             }
-            catch
+            catch(Exception ex)
             {
                 return null;
             }

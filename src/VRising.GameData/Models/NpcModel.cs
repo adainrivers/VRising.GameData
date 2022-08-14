@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Unity.Entities;
 using Unity.Mathematics;
+using VRising.GameData.Models.Base;
 
 namespace VRising.GameData.Models
 {

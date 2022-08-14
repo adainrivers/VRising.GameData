@@ -1,4 +1,5 @@
 ﻿using Unity.Entities;
+using VRising.GameData.Models.Base;
 using VRising.GameData.Models.Internals;
 using VRising.GameData.Utils;
 

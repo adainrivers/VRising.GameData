@@ -1,7 +1,7 @@
 ﻿using Unity.Entities;
 using VRising.GameData.Models.Internals;
 
-namespace VRising.GameData.Models
+namespace VRising.GameData.Models.Base
 {
     public abstract class EntityModel
     {

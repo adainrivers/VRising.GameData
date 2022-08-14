@@ -5,11 +5,12 @@ namespace VRising.GameData
 {
     public class Npcs
     {
-        internal Npcs()
-        {
-        }
+        private Npcs() { }
 
-        public NpcModel GetNpcFromEntity(Entity npcEntity)
+        private static Npcs _instance;
+        internal static Npcs Instance => _instance ??= new Npcs();
+
+        public NpcModel FromEntity(Entity npcEntity)
         {
             return new NpcModel(npcEntity);
         }

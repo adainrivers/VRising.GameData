@@ -1,4 +1,6 @@
-﻿using HarmonyLib;
+﻿using System;
+using System.Diagnostics;
+using HarmonyLib;
 
 namespace VRising.GameData.Patch;
 
@@ -15,12 +17,11 @@ internal static class ServerEvents
             if (loadState == ServerStartupState.State.SuccessfulStartup)
             {
                 OnGameDataInitialized?.Invoke(__instance.World);
-                OnGameDataInitialized = null;
             }
         }
-        catch
+        catch (Exception ex)
         {
-            // Suppress
+            Plugin.Logger.LogError(ex);
         }
     }
 }

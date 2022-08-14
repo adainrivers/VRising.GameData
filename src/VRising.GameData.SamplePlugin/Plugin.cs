@@ -7,6 +7,7 @@ using Unity.Entities;
 namespace VRising.GameData.SamplePlugin
 {
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
+    [BepInDependency("VRising.GameData")]
     public class Plugin : BasePlugin
     {
         internal static string Name = PluginInfo.PLUGIN_NAME;
@@ -18,7 +19,6 @@ namespace VRising.GameData.SamplePlugin
         {
             Logger = Log;
             Logger.LogInfo($"Plugin {Name} {Version} is loaded!");
-            GameData.Create();
             GameData.OnInitialize += GameDataOnInitialize;
         }
 
@@ -28,6 +28,10 @@ namespace VRising.GameData.SamplePlugin
             foreach (var userModel in GameData.Users.All)
             {
                 Logger.LogMessage($"{userModel.CharacterName} Connected: {userModel.IsConnected}");
+                foreach (var inventoryItem in userModel.Inventory.Items)
+                {
+                    Logger.LogMessage($"\tSlot: {inventoryItem.Slot} Item: {inventoryItem.Item.Name} ({inventoryItem.Stacks})");
+                }
             }
 
             var weapons = GameData.Items.Weapons.Take(10);
@@ -41,7 +45,6 @@ namespace VRising.GameData.SamplePlugin
         public override bool Unload()
         {
             GameData.OnInitialize -= GameDataOnInitialize;
-            GameData.Destroy();
             Logger.LogInfo($"Plugin {Name} {Version} is unloaded!");
             return true;
         }

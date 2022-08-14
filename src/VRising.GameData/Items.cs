@@ -8,9 +8,10 @@ namespace VRising.GameData
 {
     public class Items
     {
-        internal Items()
-        {
-        }
+        private Items() { }
+
+        private static Items _instance;
+        internal static Items Instance => _instance ??= new Items();
 
         public ItemModel GetPrefabById(PrefabGUID prefabGuid)
         {
@@ -19,9 +20,9 @@ namespace VRising.GameData
                 var entity = GameData.Systems.PrefabCollectionSystem.PrefabLookupMap[prefabGuid];
                 return FromEntity(entity);
             }
-            catch
+            catch (Exception ex)
             {
-                // Suppress
+                Plugin.Logger.LogError(ex);
             }
 
             return null;
@@ -36,9 +37,9 @@ namespace VRising.GameData
                     return new ItemModel(entity);
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                // Suppress
+                Plugin.Logger.LogError(ex);
             }
 
             return null;

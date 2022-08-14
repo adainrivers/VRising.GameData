@@ -1,27 +1,21 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using HarmonyLib;
 
 namespace VRising.GameData.Patch;
 
-internal static class ClientEvents
+internal class ClientEvents
 {
     internal static event OnGameDataInitializedEventHandler OnGameDataInitialized;
+    internal static event OnGameDataDestroyedEventHandler OnGameDataDestroyed;
 
     private static bool _onGameDataInitializedTriggered;
     [HarmonyPatch(typeof(GameDataManager), "OnUpdate")]
     [HarmonyPostfix]
     private static void GameDataManagerOnUpdatePostfix(GameDataManager __instance)
     {
-        Debug.WriteLine("GameDataManagerOnUpdatePostfix Start");
         if (_onGameDataInitializedTriggered)
         {
-            Debug.WriteLine("GameDataManagerOnUpdatePostfix _onGameDataInitializedTriggered");
-            if (!__instance.GameDataInitialized)
-            {
-                Debug.WriteLine("GameDataManagerOnUpdatePostfix !__instance.GameDataInitialized");
-                // Reset state if game date is no longer initialized
-                _onGameDataInitializedTriggered = false;
-            }
             return;
         }
 
@@ -29,7 +23,6 @@ internal static class ClientEvents
         {
             if (!__instance.GameDataInitialized)
             {
-                Debug.WriteLine("GameDataManagerOnUpdatePostfix !__instance.GameDataInitialized (2)");
                 return;
             }
 
@@ -37,9 +30,23 @@ internal static class ClientEvents
             Debug.WriteLine("GameDataManagerOnUpdatePostfix Trigger");
             OnGameDataInitialized?.Invoke(__instance.World);
         }
-        catch
+        catch (Exception ex)
         {
-            //Suppress
+            Plugin.Logger.LogError(ex);
+        }
+    }
+
+    [HarmonyPatch(typeof(ClientBootstrapSystem), "OnDestroy")]
+    [HarmonyPostfix]
+    private static void ClientBootstrapSystemOnDestroyPostfix(ClientBootstrapSystem __instance)
+    {
+        try
+        {
+            OnGameDataDestroyed?.Invoke();
+        }
+        catch (Exception ex)
+        {
+            Plugin.Logger.LogError(ex);
         }
     }
 }

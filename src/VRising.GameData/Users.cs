@@ -10,9 +10,10 @@ namespace VRising.GameData;
 
 public class Users
 {
-    internal Users()
-    {
-    }
+    private Users() { }
+
+    private static Users _instance;
+    internal static Users Instance => _instance ??= new Users();
 
     public UserModel GetUserByPlatformId(ulong platformId)
     {
@@ -24,7 +25,7 @@ public class Users
         return All.FirstOrDefault(u => u.CharacterName == characterName);
     }
 
-    public UserModel GetUserFromEntity(Entity userEntity)
+    public UserModel FromEntity(Entity userEntity)
     {
         if (!GameData.World.EntityManager.HasComponent<User>(userEntity))
         {
@@ -48,7 +49,7 @@ public class Users
                     .ToEntityArray(Allocator.Temp);
                 foreach (var userEntity in userEntities)
                 {
-                    yield return GetUserFromEntity(userEntity);
+                    yield return FromEntity(userEntity);
                 }
             }
         }

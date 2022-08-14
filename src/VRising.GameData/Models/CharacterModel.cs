@@ -1,4 +1,5 @@
-﻿using Unity.Entities;
+﻿using ProjectM.Scripting;
+using Unity.Entities;
 using VRising.GameData.Models.Internals;
 
 namespace VRising.GameData.Models

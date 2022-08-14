@@ -10,10 +10,11 @@
       https://api.nuget.org/v3/index.json;
       https://nuget.bepinex.dev/v3/index.json;
     </RestoreSources>
+
     <ServerPath>D:\SteamLibrary\steamapps\common\VRising\VRising_Server</ServerPath>
+    <ClientPath>D:\SteamLibrary\steamapps\common\VRising</ClientPath>
     <UnhollowedDllsPath>$(ServerPath)\BepinEx\unhollowed</UnhollowedDllsPath>
-    <PluginsPath>$(ServerPath)\BepinEx\plugins</PluginsPath>
-    <WetstonePluginsPath>$(ServerPath)\BepinEx\WetstonePlugins</WetstonePluginsPath>
+
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Description>An extensible framework to access V Rising ECS data</Description>
     <PackageProjectUrl>https://github.com/adainrivers/VRising.GameData</PackageProjectUrl>
@@ -27,7 +28,8 @@
 
   <Target Name="CopyDLLs" AfterTargets="Build">
     <Message Text="Executing CopyDLLs task" Importance="High" />
-    <Copy SourceFiles="$(TargetDir)$(ProjectName).dll;$(TargetDir)$(ProjectName).pdb" DestinationFolder="$(PluginsPath)" />
+    <Copy SourceFiles="$(TargetDir)$(ProjectName).dll;$(TargetDir)$(ProjectName).pdb" DestinationFolder="$(ServerPath)\BepinEx\plugins" />
+    <Copy SourceFiles="$(TargetDir)$(ProjectName).dll;$(TargetDir)$(ProjectName).pdb" DestinationFolder="$(ClientPath)\BepinEx\plugins" />
     <Message Text="Copied build files" Importance="High" />
   </Target>
   <ItemGroup>
