@@ -1,6 +1,6 @@
 {
-  "name": "VRising_GameData",
-  "version_number": "0.2.2",
+  "name": "GT_VRising_GameData",
+  "version_number": "0.2.4",
   "website_url": "https://github.com/adainrivers/VRising.GameData",
   "description": "Game data framework and general utilities for V Rising mods.",
   "dependencies": [

@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using GT.VRising.GameData.Models;
+using GT.VRising.GameData.Utils;
+using ProjectM;
 using ProjectM.CastleBuilding;
 using ProjectM.Network;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
-using VRising.GameData.Models;
-using VRising.GameData.Utils;
 
-namespace VRising.GameData.Methods
+namespace GT.VRising.GameData.Methods
 {
     public static class UserModelMethods
     {
@@ -107,9 +109,13 @@ namespace VRising.GameData.Methods
             return false;
         }
 
+        private static readonly PrefabGUID InCombatBuff = new PrefabGUID(581443919);
+        private static readonly PrefabGUID InCombatPvPBuff = new PrefabGUID(697095869);
         public static bool IsInCombat(this UserModel userModel)
         {
-            return userModel.Internals.InCombatBuff;
+            return BuffUtility.HasBuff(GameData.World.EntityManager, userModel.Character.Entity, InCombatBuff) ||
+                   BuffUtility.HasBuff(GameData.World.EntityManager, userModel.Character.Entity, InCombatPvPBuff);
+
         }
     }
 }

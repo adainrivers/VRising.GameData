@@ -7,7 +7,8 @@ using Unity.Entities;
 namespace VRising.GameData.SamplePlugin
 {
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
-    [BepInDependency("VRising.GameData")]
+
+    [BepInDependency("GT.VRising.GameData")]
     public class Plugin : BasePlugin
     {
         internal static string Name = PluginInfo.PLUGIN_NAME;
@@ -19,13 +20,13 @@ namespace VRising.GameData.SamplePlugin
         {
             Logger = Log;
             Logger.LogInfo($"Plugin {Name} {Version} is loaded!");
-            GameData.OnInitialize += GameDataOnInitialize;
+            GT.VRising.GameData.GameData.OnInitialize += GameDataOnInitialize;
         }
 
         private static void GameDataOnInitialize(World world)
         {
             Logger.LogWarning("All Users:");
-            foreach (var userModel in GameData.Users.All)
+            foreach (var userModel in GT.VRising.GameData.GameData.Users.All)
             {
                 Logger.LogMessage($"{userModel.CharacterName} Connected: {userModel.IsConnected}");
                 foreach (var inventoryItem in userModel.Inventory.Items)
@@ -34,7 +35,7 @@ namespace VRising.GameData.SamplePlugin
                 }
             }
 
-            var weapons = GameData.Items.Weapons.Take(10);
+            var weapons = GT.VRising.GameData.GameData.Items.Weapons.Take(10);
             Logger.LogWarning("Some Weapons:");
             foreach (var itemModel in weapons)
             {
@@ -44,7 +45,7 @@ namespace VRising.GameData.SamplePlugin
 
         public override bool Unload()
         {
-            GameData.OnInitialize -= GameDataOnInitialize;
+            GT.VRising.GameData.GameData.OnInitialize -= GameDataOnInitialize;
             Logger.LogInfo($"Plugin {Name} {Version} is unloaded!");
             return true;
         }

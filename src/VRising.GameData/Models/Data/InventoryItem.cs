@@ -1,4 +1,4 @@
-﻿namespace VRising.GameData.Models.Data;
+﻿namespace GT.VRising.GameData.Models.Data;
 
 public class InventoryItemData
 {

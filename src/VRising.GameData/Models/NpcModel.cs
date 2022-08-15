@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using GT.VRising.GameData.Models.Base;
+using ProjectM;
 using Unity.Entities;
 using Unity.Mathematics;
-using VRising.GameData.Models.Base;
 
-namespace VRising.GameData.Models
+namespace GT.VRising.GameData.Models
 {
     public partial class NpcModel: EntityModel
     {

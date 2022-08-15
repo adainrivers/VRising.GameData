@@ -18,7 +18,7 @@
     <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\VRising.GameData\VRising.GameData.csproj" />
+    <ProjectReference Include="..\VRising.GameData\GT.VRising.GameData.csproj" />
   </ItemGroup>
   <Target Name="CopyDLLs" AfterTargets="Build">
     <Message Text="Executing CopyDLLs task" Importance="High" />

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using ProjectM;
 using Unity.Entities;
 
-namespace VRising.GameData.Models.Internals
+namespace GT.VRising.GameData.Models.Internals
 {
     internal static class Extensions
     {

@@ -1,8 +1,7 @@
-﻿using ProjectM.Scripting;
+﻿using GT.VRising.GameData.Models.Internals;
 using Unity.Entities;
-using VRising.GameData.Models.Internals;
 
-namespace VRising.GameData.Models
+namespace GT.VRising.GameData.Models
 {
     public partial class CharacterModel
     {

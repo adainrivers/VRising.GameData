@@ -1,6 +1,6 @@
 using Unity.Entities;
 
-namespace VRising.GameData.Models.Internals
+namespace GT.VRising.GameData.Models.Internals
 {
     public class BaseManagedDataModel
     {

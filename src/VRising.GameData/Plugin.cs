@@ -1,10 +1,9 @@
-﻿using System;
-using BepInEx;
+﻿using BepInEx;
 using BepInEx.IL2CPP;
+using GT.VRising.GameData.Utils;
 using Unity.Entities;
-using VRising.GameData.Utils;
 
-namespace VRising.GameData
+namespace GT.VRising.GameData
 {
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
     public class Plugin : BasePlugin

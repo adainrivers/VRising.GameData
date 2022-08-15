@@ -1,7 +1,7 @@
 ﻿using System;
 using BepInEx.Logging;
 
-namespace VRising.GameData.Utils
+namespace GT.VRising.GameData.Utils
 {
     internal class Logger
     {

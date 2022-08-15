@@ -1,4 +1,6 @@
-﻿namespace VRising.GameData
+﻿using ProjectM;
+
+namespace GT.VRising.GameData
 {
     public class Systems
     {

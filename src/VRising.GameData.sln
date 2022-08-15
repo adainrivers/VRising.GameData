@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Root", "Root", "{A61B7C3E-9
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VRising.GameData.ClassGenerator", "VRising.GameData.ClassGenerator\VRising.GameData.ClassGenerator.csproj", "{B78314E2-2747-49C5-8EB4-DBEBCF5973B9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VRising.GameData", "VRising.GameData\VRising.GameData.csproj", "{4498E1BD-6D70-4AD5-B6EB-C915DE9BF476}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GT.VRising.GameData", "VRising.GameData\GT.VRising.GameData.csproj", "{4498E1BD-6D70-4AD5-B6EB-C915DE9BF476}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VRising.GameData.SamplePlugin", "VRising.GameData.SamplePlugin\VRising.GameData.SamplePlugin.csproj", "{11D78431-DD45-41DC-A5A3-DB9AC61A2173}"
 EndProject

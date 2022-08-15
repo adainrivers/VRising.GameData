@@ -1,11 +1,10 @@
-﻿global using ProjectM;
-using System;
-using Unity.Entities;
+﻿using System;
+using GT.VRising.GameData.Patch;
 using HarmonyLib;
+using Unity.Entities;
 using UnityEngine;
-using VRising.GameData.Patch;
 
-namespace VRising.GameData;
+namespace GT.VRising.GameData;
 
 public delegate void OnGameDataInitializedEventHandler(World world);
 public delegate void OnGameDataDestroyedEventHandler();

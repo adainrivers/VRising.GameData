@@ -1,6 +1,7 @@
-﻿using Unity.Entities;
+﻿using ProjectM;
+using Unity.Entities;
 
-namespace VRising.GameData.Models
+namespace GT.VRising.GameData.Models
 {
     public partial class EquipmentModel
     {

@@ -1,9 +1,10 @@
-﻿using Unity.Entities;
-using VRising.GameData.Models.Base;
-using VRising.GameData.Models.Internals;
-using VRising.GameData.Utils;
+﻿using GT.VRising.GameData.Models.Base;
+using GT.VRising.GameData.Models.Internals;
+using GT.VRising.GameData.Utils;
+using ProjectM;
+using Unity.Entities;
 
-namespace VRising.GameData.Models
+namespace GT.VRising.GameData.Models
 {
     public partial class ItemModel : EntityModel
     {

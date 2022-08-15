@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using GT.VRising.GameData.Models.Base;
 using ProjectM.Network;
 using ProjectM.Shared;
 using Unity.Entities;
 using Unity.Mathematics;
-using VRising.GameData.Models.Base;
-using VRising.GameData.Utils;
 
-namespace VRising.GameData.Models
+namespace GT.VRising.GameData.Models
 {
     public partial class UserModel : EntityModel
     {

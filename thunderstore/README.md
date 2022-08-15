@@ -6,18 +6,18 @@ See [V Rising Database](https://gaming.tools/v-rising) for detailed information 
 
 ## Installation
 
-Install the NuGet package `VRising.GameData`
+Install the NuGet package `GT.VRising.GameData`
 
 ## Usage
 
 - Add BepInDependency to your plugin:
 
 ```csharp
-    [BepInDependency("VRising.GameData")]
+    [BepInDependency("GT.VRising.GameData")]
     public class Plugin : BasePlugin
 ```
 
-- Add the following to your Plugin's `Load()` method: 
+- Optionally, add the following to your Plugin's `Load()` method. You shouldn't access any of the `GameData` properties before initialization is done.: 
 
 ```csharp
 public override void Load()
@@ -28,7 +28,7 @@ public override void Load()
 }
 ```
 
-- Create the initialization method
+- Sample initialization method:
 
 ```csharp
 private static void GameDataOnInitialize(World world)

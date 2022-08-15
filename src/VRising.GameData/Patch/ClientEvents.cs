@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using HarmonyLib;
+using ProjectM;
 
-namespace VRising.GameData.Patch;
+namespace GT.VRising.GameData.Patch;
 
 internal class ClientEvents
 {

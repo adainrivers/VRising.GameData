@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Unity.Entities;
 
-namespace VRising.GameData.Models.Internals
+namespace GT.VRising.GameData.Models.Internals
 {
     public class BaseEntityModel
     {
