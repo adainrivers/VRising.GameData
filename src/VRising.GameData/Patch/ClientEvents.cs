@@ -2,8 +2,9 @@
 using System.Diagnostics;
 using HarmonyLib;
 using ProjectM;
+using VRising.GameData.Utils;
 
-namespace GT.VRising.GameData.Patch;
+namespace VRising.GameData.Patch;
 
 internal class ClientEvents
 {
@@ -33,7 +34,7 @@ internal class ClientEvents
         }
         catch (Exception ex)
         {
-            Plugin.Logger.LogError(ex);
+            Logger.LogError(ex);
         }
     }
 
@@ -47,7 +48,7 @@ internal class ClientEvents
         }
         catch (Exception ex)
         {
-            Plugin.Logger.LogError(ex);
+            Logger.LogError(ex);
         }
     }
 }

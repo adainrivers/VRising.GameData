@@ -1,18 +1,25 @@
-﻿using GT.VRising.GameData.Models;
-using Unity.Entities;
+﻿using Unity.Entities;
+using VRising.GameData.Models;
 
-namespace GT.VRising.GameData
+namespace VRising.GameData
 {
     public class Npcs
     {
-        private Npcs() { }
+        private readonly GameData _gameData;
+        private Npcs(GameData gameData)
+        {
+            _gameData = gameData;
+        }
 
         private static Npcs _instance;
-        internal static Npcs Instance => _instance ??= new Npcs();
+        internal static Npcs GetOrCreate(GameData gameData)
+        {
+            return _instance ??= new Npcs(gameData);
+        }
 
         public NpcModel FromEntity(Entity npcEntity)
         {
-            return new NpcModel(npcEntity);
+            return new NpcModel(_gameData, npcEntity);
         }
     }
 }

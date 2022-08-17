@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using GT.VRising.GameData.Models;
-using GT.VRising.GameData.Models.Internals;
 using ProjectM;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
+using VRising.GameData.Models.Internals;
 
-namespace GT.VRising.GameData.Utils
+namespace VRising.GameData.Utils
 {
     public static class ExtensionMethods
     {
-        public static string GetPrefabName(this PrefabGUID prefabGuid)
+        public static string GetPrefabName(this PrefabGUID prefabGuid, GameData gameData)
         {
             try
             {
-                return GameData.Systems.PrefabCollectionSystem.PrefabNameLookupMap[prefabGuid].ToString();
+                return gameData.Systems.PrefabCollectionSystem.PrefabNameLookupMap[prefabGuid].ToString();
             }
             catch
             {
@@ -23,12 +22,12 @@ namespace GT.VRising.GameData.Utils
             }
         }
 
-        public static IEnumerable<BaseEntityModel> ToEnumerable(this EntityQuery entityQuery)
+        public static IEnumerable<BaseEntityModel> ToEnumerable(this EntityQuery entityQuery, GameData gameData)
         {
             var entities = entityQuery.ToEntityArray(Allocator.Temp);
             foreach (var entity in entities)
             {
-                yield return new BaseEntityModel(GameData.World, entity);
+                yield return new BaseEntityModel(gameData.World, entity);
             }
         }
 
@@ -52,14 +51,6 @@ namespace GT.VRising.GameData.Utils
         //    }
         //}
 
-        public static IEnumerable<NpcModel> AsNpcs(this EntityQuery entityQuery) 
-        {
-            var entities = entityQuery.ToEntityArray(Allocator.Temp);
-            foreach (var entity in entities)
-            {
-                yield return new NpcModel(entity);
-            }
-        }
 
         public static DateTime ToDateTime(this long unixDateTime)
         {

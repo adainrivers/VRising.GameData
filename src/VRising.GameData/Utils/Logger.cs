@@ -1,28 +1,21 @@
 ﻿using System;
 using BepInEx.Logging;
 
-namespace GT.VRising.GameData.Utils
+namespace VRising.GameData.Utils
 {
-    internal class Logger
+    internal static class Logger
     {
-        private readonly ManualLogSource _logger;
-
-        internal Logger(ManualLogSource logger)
+        private static void Log(LogLevel logLevel, string message)
         {
-            _logger = logger;
+            Console.WriteLine($"[{logLevel}] {message}");
         }
 
-        internal void Log(LogLevel logLevel, string message)
-        {
-            _logger.Log(logLevel, $"[{Plugin.Version}] {message}");
-        }
-
-        internal void LogInfo(string message) => Log(LogLevel.Info, message);
-        internal void LogWarning(string message) =>  Log(LogLevel.Warning, message);
-        internal void LogDebug(string message) =>  Log(LogLevel.Debug, message);
-        internal void LogFatal(string message) =>  Log(LogLevel.Fatal, message);
-        internal void LogError(string message) =>  Log(LogLevel.Error, message);
-        internal void LogError(Exception exception) =>  Log(LogLevel.Error, exception.ToString());
-        internal void LogMessage(string message) =>  Log(LogLevel.Message, message);
+        internal static void LogInfo(string message) => Log(LogLevel.Info, message);
+        internal static void LogWarning(string message) =>  Log(LogLevel.Warning, message);
+        internal static void LogDebug(string message) =>  Log(LogLevel.Debug, message);
+        internal static void LogFatal(string message) =>  Log(LogLevel.Fatal, message);
+        internal static void LogError(string message) =>  Log(LogLevel.Error, message);
+        internal static void LogError(Exception exception) =>  Log(LogLevel.Error, exception.ToString());
+        internal static void LogMessage(string message) =>  Log(LogLevel.Message, message);
     }
 }

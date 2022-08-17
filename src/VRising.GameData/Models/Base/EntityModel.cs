@@ -1,14 +1,14 @@
-﻿using GT.VRising.GameData.Models.Internals;
-using Unity.Entities;
+﻿using Unity.Entities;
+using VRising.GameData.Models.Internals;
 
-namespace GT.VRising.GameData.Models.Base
+namespace VRising.GameData.Models.Base
 {
     public abstract class EntityModel
     {
-        protected EntityModel(Entity entity)
+        protected EntityModel(GameData gameData, Entity entity)
         {
             Entity = entity;
-            Internals = new BaseEntityModel(GameData.World, entity);
+            Internals = new BaseEntityModel(gameData.World, entity);
         }
 
         public Entity Entity { get; }

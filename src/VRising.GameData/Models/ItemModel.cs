@@ -1,17 +1,20 @@
-﻿using GT.VRising.GameData.Models.Base;
-using GT.VRising.GameData.Models.Internals;
-using GT.VRising.GameData.Utils;
-using ProjectM;
+﻿using ProjectM;
 using Unity.Entities;
+using VRising.GameData.Models.Base;
+using VRising.GameData.Models.Internals;
+using VRising.GameData.Utils;
 
-namespace GT.VRising.GameData.Models
+namespace VRising.GameData.Models
 {
     public partial class ItemModel : EntityModel
     {
-        internal ItemModel(Entity entity) : base(entity)
+        private readonly GameData _gameData;
+
+        internal ItemModel(GameData gameData, Entity entity) : base(gameData, entity)
         {
-            PrefabName = Internals.PrefabGUID?.GetPrefabName();
-            ManagedGameData = new BaseManagedDataModel(GameData.World, Internals);
+            _gameData = gameData;
+            PrefabName = Internals.PrefabGUID?.GetPrefabName(gameData);
+            ManagedGameData = new BaseManagedDataModel(gameData.World, Internals);
         }
 
         public BaseManagedDataModel ManagedGameData { get; }

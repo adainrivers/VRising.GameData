@@ -1,17 +1,17 @@
 ﻿using System;
-using GT.VRising.GameData.Patch;
 using HarmonyLib;
 using Unity.Entities;
 using UnityEngine;
+using VRising.GameData.Patch;
 
-namespace GT.VRising.GameData;
+namespace VRising.GameData;
 
 public delegate void OnGameDataInitializedEventHandler(World world);
-public delegate void OnGameDataDestroyedEventHandler();
+internal delegate void OnGameDataDestroyedEventHandler();
 
-public static class GameData
+public class GameData : IDisposable
 {
-    private static bool _initialized;
+    private bool _initialized;
 
     private const string NotInitializedError = "GameData is not initialized";
 
@@ -20,24 +20,27 @@ public static class GameData
 
     public static GameVersionData GameVersion => GameVersionUtils.GetVersionData();
 
-    public static event OnGameDataInitializedEventHandler OnInitialize;
-    public static event OnGameDataDestroyedEventHandler OnDestroy;
+    public event OnGameDataInitializedEventHandler OnInitialize;
 
-    private static World _world;
-    public static World World => _world ?? throw new InvalidOperationException(NotInitializedError);
+    private World _world;
+    public World World => _world ?? throw new InvalidOperationException(NotInitializedError);
 
-    public static Systems Systems => _initialized ? Systems.Instance : throw new InvalidOperationException(NotInitializedError);
-    public static Users Users => _initialized ? Users.Instance : throw new InvalidOperationException(NotInitializedError);
-    public static Items Items => _initialized ? Items.Instance : throw new InvalidOperationException(NotInitializedError);
-    public static Npcs Npcs => _initialized ? Npcs.Instance : throw new InvalidOperationException(NotInitializedError);
+    public Systems Systems => _initialized ? Systems.GetOrCreate(this) : throw new InvalidOperationException(NotInitializedError);
+    public Users Users => _initialized ? Users.GetOrCreate(this) : throw new InvalidOperationException(NotInitializedError);
+    public Items Items => _initialized ? Items.GetOrCreate(this) : throw new InvalidOperationException(NotInitializedError);
+    public Npcs Npcs => _initialized ? Npcs.GetOrCreate(this) : throw new InvalidOperationException(NotInitializedError);
 
-    private static Harmony _harmonyInstance;
+    private Harmony _harmonyInstance;
+    private readonly string _instanceId = Guid.NewGuid().ToString();
 
-
-    internal static void Create()
+    public GameData()
     {
-        _harmonyInstance = new Harmony(Plugin.Guid);
+        _harmonyInstance = new Harmony(_instanceId);
+        Create();
+    }
 
+    private void Create()
+    {
         if (IsClient)
         {
             _harmonyInstance.PatchAll(typeof(ClientEvents));
@@ -52,7 +55,7 @@ public static class GameData
         }
     }
 
-    internal static void Destroy()
+    private void Destroy()
     {
         OnInitialize = null;
         if (IsClient)
@@ -69,29 +72,13 @@ public static class GameData
         _harmonyInstance = null;
     }
 
-    private static void OnGameDataDestroyed()
+    private void OnGameDataDestroyed()
     {
         _world = null;
         _initialized = false;
-        OnDestroy?.Invoke();
-        if (OnDestroy == null)
-        {
-            return;
-        }
-        foreach (var hook in OnDestroy.GetInvocationList())
-        {
-            try
-            {
-                hook.DynamicInvoke();
-            }
-            catch (Exception e)
-            {
-                Plugin.Logger.LogError(e);
-            }
-        }
     }
 
-    private static void OnGameDataInitialized(World world)
+    private void OnGameDataInitialized(World world)
     {
         _world = world;
         _initialized = true;
@@ -107,8 +94,13 @@ public static class GameData
             }
             catch (Exception e)
             {
-                Plugin.Logger.LogError(e);
+                Utils.Logger.LogError(e);
             }
         }
+    }
+
+    public void Dispose()
+    {
+        Destroy();
     }
 }

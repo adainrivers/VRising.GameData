@@ -1,19 +1,21 @@
-﻿using GT.VRising.GameData.Models.Internals;
-using Unity.Entities;
+﻿using Unity.Entities;
+using VRising.GameData.Models.Internals;
 
-namespace GT.VRising.GameData.Models
+namespace VRising.GameData.Models
 {
     public partial class CharacterModel
     {
+        private readonly GameData _gameData;
         public Entity Entity { get; }
         public BaseEntityModel Internals { get; }
 
-        public EquipmentModel Equipment => Internals.Equipment != null ? new(Internals.Equipment.Value) : null;
+        public EquipmentModel Equipment => Internals.Equipment != null ? new(_gameData, Internals.Equipment.Value) : null;
 
-        internal CharacterModel(Entity entity)
+        internal CharacterModel(GameData gameData, Entity entity)
         {
+            _gameData = gameData;
             Entity = entity;
-            Internals = new BaseEntityModel(GameData.World, entity);
+            Internals = new BaseEntityModel(gameData.World, entity);
         }
     }
 }

@@ -1,29 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GT.VRising.GameData.Models;
 using ProjectM;
 using Unity.Entities;
+using VRising.GameData.Models;
+using VRising.GameData.Utils;
 
-namespace GT.VRising.GameData
+namespace VRising.GameData
 {
     public class Items
     {
-        private Items() { }
+        private readonly GameData _gameData;
+        private Items(GameData gameData)
+        {
+            _gameData = gameData;
+        }
 
         private static Items _instance;
-        internal static Items Instance => _instance ??= new Items();
+        internal static Items GetOrCreate(GameData gameData)
+        {
+            return _instance ??= new Items(gameData);
+        }
 
         public ItemModel GetPrefabById(PrefabGUID prefabGuid)
         {
             try
             {
-                var entity = GameData.Systems.PrefabCollectionSystem.PrefabLookupMap[prefabGuid];
+                var entity = _gameData.Systems.PrefabCollectionSystem.PrefabLookupMap[prefabGuid];
                 return FromEntity(entity);
             }
             catch (Exception ex)
             {
-                Plugin.Logger.LogError(ex);
+                Logger.LogError(ex);
             }
 
             return null;
@@ -33,14 +41,14 @@ namespace GT.VRising.GameData
         {
             try
             {
-                if (GameData.World.EntityManager.HasComponent<ItemData>(entity))
+                if (_gameData.World.EntityManager.HasComponent<ItemData>(entity))
                 {
-                    return new ItemModel(entity);
+                    return new ItemModel(_gameData, entity);
                 }
             }
             catch (Exception ex)
             {
-                Plugin.Logger.LogError(ex);
+                Logger.LogError(ex);
             }
 
             return null;
@@ -52,7 +60,7 @@ namespace GT.VRising.GameData
         private List<ItemModel> GetItemPrefabs()
         {
             var result = new List<ItemModel>();
-            foreach (var prefabEntity in GameData.Systems.PrefabCollectionSystem.PrefabLookupMap)
+            foreach (var prefabEntity in _gameData.Systems.PrefabCollectionSystem.PrefabLookupMap)
             {
                 var itemModel = FromEntity(prefabEntity.Value);
                 if (itemModel != null)

@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using GT.VRising.GameData.Models.Base;
 using ProjectM;
 using Unity.Entities;
 using Unity.Mathematics;
+using VRising.GameData.Models.Base;
 
-namespace GT.VRising.GameData.Models
+namespace VRising.GameData.Models
 {
     public partial class NpcModel: EntityModel
     {
+        private readonly GameData _gameData;
+
         private readonly HashSet<UnitCategory> _npcCategories = new()
         {
             UnitCategory.Beast,
@@ -18,8 +20,9 @@ namespace GT.VRising.GameData.Models
             UnitCategory.Mechanical
         };
 
-        internal NpcModel(Entity entity) : base(entity)
+        internal NpcModel(GameData gameData, Entity entity) : base(gameData, entity)
         {
+            _gameData = gameData;
             var entityCategory = Internals.EntityCategory;
             if (entityCategory == null || entityCategory.Value.MainCategory != MainEntityCategory.Unit || !_npcCategories.Contains(entityCategory.Value.UnitCategory))
             {
