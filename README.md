@@ -6,16 +6,31 @@ See [V Rising Database](https://gaming.tools/v-rising) for detailed information 
 
 ## Installation
 
-Install the NuGet package `GT.VRising.GameData`
+Install the NuGet package `VRising.GameData`
+
+Add the following lines to your plugin's .csproj file:
+
+```xml
+<PackageReference Include="Fody" Version="6.6.3">
+    <PrivateAssets>all</PrivateAssets>
+</PackageReference>
+<PackageReference Include="ILMerge.Fody" Version="1.23.0" />
+```
+
+And update the FodyWeavers.xml to look like this:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<Weavers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="FodyWeavers.xsd">
+  <ILMerge>
+    <IncludeAssemblies>VRising.GameData</IncludeAssemblies>
+  </ILMerge>
+</Weavers>
+```
+
+If you have more assemblies to add, separate the with the pipe `|` character.
 
 ## Usage
-
-- Add BepInDependency to your plugin:
-
-```csharp
-    [BepInDependency("GT.VRising.GameData")]
-    public class Plugin : BasePlugin
-```
 
 - Optionally, add the following to your Plugin's `Load()` method. You shouldn't access any of the `GameData` properties before initialization is done.: 
 
@@ -59,6 +74,8 @@ public override bool Unload()
     return true;
 }
 ```
+
+After the initialization is done, you can access to the `GameData` class from anywhere of your plugin code.
 
 See the sample project here: 
 

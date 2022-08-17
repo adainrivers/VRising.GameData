@@ -1,17 +1,24 @@
 ﻿using System;
-using GT.VRising.GameData.Patch;
+using BepInEx.Logging;
 using HarmonyLib;
 using Unity.Entities;
 using UnityEngine;
+using VRising.GameData.Patch;
 
-namespace GT.VRising.GameData;
+namespace VRising.GameData;
 
 public delegate void OnGameDataInitializedEventHandler(World world);
 public delegate void OnGameDataDestroyedEventHandler();
 
 public static class GameData
 {
+    static GameData()
+    {
+        Create();
+    }
+
     private static bool _initialized;
+    private static bool _worldDataInitialized;
 
     private const string NotInitializedError = "GameData is not initialized";
 
@@ -20,23 +27,30 @@ public static class GameData
 
     public static GameVersionData GameVersion => GameVersionUtils.GetVersionData();
 
+
     public static event OnGameDataInitializedEventHandler OnInitialize;
     public static event OnGameDataDestroyedEventHandler OnDestroy;
 
     private static World _world;
     public static World World => _world ?? throw new InvalidOperationException(NotInitializedError);
 
-    public static Systems Systems => _initialized ? Systems.Instance : throw new InvalidOperationException(NotInitializedError);
-    public static Users Users => _initialized ? Users.Instance : throw new InvalidOperationException(NotInitializedError);
-    public static Items Items => _initialized ? Items.Instance : throw new InvalidOperationException(NotInitializedError);
-    public static Npcs Npcs => _initialized ? Npcs.Instance : throw new InvalidOperationException(NotInitializedError);
+    public static Systems Systems => _worldDataInitialized ? Systems.Instance : throw new InvalidOperationException(NotInitializedError);
+    public static Users Users => _worldDataInitialized ? Users.Instance : throw new InvalidOperationException(NotInitializedError);
+    public static Items Items => _worldDataInitialized ? Items.Instance : throw new InvalidOperationException(NotInitializedError);
+    public static Npcs Npcs => _worldDataInitialized ? Npcs.Instance : throw new InvalidOperationException(NotInitializedError);
 
     private static Harmony _harmonyInstance;
 
+    internal static ManualLogSource Logger = BepInEx.Logging.Logger.CreateLogSource("VRising.GameData");
 
     internal static void Create()
     {
-        _harmonyInstance = new Harmony(Plugin.Guid);
+        if (_initialized)
+        {
+            return;
+        }
+        _initialized = true;
+        _harmonyInstance = new Harmony("VRising.GameData");
 
         if (IsClient)
         {
@@ -72,7 +86,7 @@ public static class GameData
     private static void OnGameDataDestroyed()
     {
         _world = null;
-        _initialized = false;
+        _worldDataInitialized = false;
         OnDestroy?.Invoke();
         if (OnDestroy == null)
         {
@@ -86,7 +100,7 @@ public static class GameData
             }
             catch (Exception e)
             {
-                Plugin.Logger.LogError(e);
+                Logger.LogError(e);
             }
         }
     }
@@ -94,7 +108,7 @@ public static class GameData
     private static void OnGameDataInitialized(World world)
     {
         _world = world;
-        _initialized = true;
+        _worldDataInitialized = true;
         if (OnInitialize == null)
         {
             return;
@@ -107,8 +121,9 @@ public static class GameData
             }
             catch (Exception e)
             {
-                Plugin.Logger.LogError(e);
+                Logger.LogError(e);
             }
         }
+        Logger.LogInfo("GameData initialized");
     }
 }

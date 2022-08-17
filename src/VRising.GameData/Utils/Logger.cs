@@ -1,7 +1,7 @@
 ﻿using System;
 using BepInEx.Logging;
 
-namespace GT.VRising.GameData.Utils
+namespace VRising.GameData.Utils
 {
     internal class Logger
     {
@@ -14,7 +14,7 @@ namespace GT.VRising.GameData.Utils
 
         internal void Log(LogLevel logLevel, string message)
         {
-            _logger.Log(logLevel, $"[{Plugin.Version}] {message}");
+            //_logger.Log(logLevel, $"[{Plugin.Version}] {message}");
         }
 
         internal void LogInfo(string message) => Log(LogLevel.Info, message);

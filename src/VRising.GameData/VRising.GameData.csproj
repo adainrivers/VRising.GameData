@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <Version>0.2.4</Version>
+    <Version>0.3.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
     <Nullable>disable</Nullable>
@@ -10,9 +10,6 @@
       https://api.nuget.org/v3/index.json;
       https://nuget.bepinex.dev/v3/index.json;
     </RestoreSources>
-
-    <ServerPath>D:\SteamLibrary\steamapps\common\VRising\VRising_Server</ServerPath>
-    <ClientPath>D:\SteamLibrary\steamapps\common\VRising</ClientPath>
 
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Description>An extensible framework to access V Rising ECS data</Description>
@@ -25,12 +22,6 @@
     <Title>$(AssemblyName)</Title>
   </PropertyGroup>
 
-  <Target Name="CopyDLLs" AfterTargets="Build">
-    <Message Text="Executing CopyDLLs task" Importance="High" />
-    <Copy SourceFiles="$(TargetDir)$(ProjectName).dll;$(TargetDir)$(ProjectName).pdb" DestinationFolder="$(ServerPath)\BepinEx\plugins" />
-    <Copy SourceFiles="$(TargetDir)$(ProjectName).dll;$(TargetDir)$(ProjectName).pdb" DestinationFolder="$(ClientPath)\BepinEx\plugins" />
-    <Message Text="Copied build files" Importance="High" />
-  </Target>
   <ItemGroup>
     <None Include="..\..\README.md">
       <Pack>True</Pack>

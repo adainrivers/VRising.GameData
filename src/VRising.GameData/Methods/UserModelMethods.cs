@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using GT.VRising.GameData.Models;
-using GT.VRising.GameData.Utils;
 using ProjectM;
 using ProjectM.CastleBuilding;
 using ProjectM.Network;
-using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
+using VRising.GameData.Models;
+using VRising.GameData.Utils;
 
-namespace GT.VRising.GameData.Methods
+namespace VRising.GameData.Methods
 {
     public static class UserModelMethods
     {

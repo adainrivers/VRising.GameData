@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GT.VRising.GameData.Models;
 using ProjectM.Network;
 using Unity.Collections;
 using Unity.Entities;
+using VRising.GameData.Models;
 
-namespace GT.VRising.GameData;
+namespace VRising.GameData;
 
 public class Users
 {

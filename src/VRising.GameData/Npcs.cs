@@ -1,7 +1,7 @@
-﻿using GT.VRising.GameData.Models;
-using Unity.Entities;
+﻿using Unity.Entities;
+using VRising.GameData.Models;
 
-namespace GT.VRising.GameData
+namespace VRising.GameData
 {
     public class Npcs
     {

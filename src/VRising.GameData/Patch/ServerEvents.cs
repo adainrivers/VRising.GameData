@@ -2,7 +2,7 @@
 using HarmonyLib;
 using ProjectM;
 
-namespace GT.VRising.GameData.Patch;
+namespace VRising.GameData.Patch;
 
 internal static class ServerEvents
 {
@@ -21,7 +21,7 @@ internal static class ServerEvents
         }
         catch (Exception ex)
         {
-            Plugin.Logger.LogError(ex);
+            GameData.Logger.LogError(ex);
         }
     }
 }

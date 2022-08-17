@@ -1,4 +1,4 @@
-﻿namespace GT.VRising.GameData.Utils
+﻿namespace VRising.GameData.Utils
 {
     struct FakeNull
     {

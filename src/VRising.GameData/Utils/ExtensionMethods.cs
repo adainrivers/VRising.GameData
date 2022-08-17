@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using GT.VRising.GameData.Models;
-using GT.VRising.GameData.Models.Internals;
 using ProjectM;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
+using VRising.GameData.Models;
+using VRising.GameData.Models.Internals;
 
-namespace GT.VRising.GameData.Utils
+namespace VRising.GameData.Utils
 {
     public static class ExtensionMethods
     {

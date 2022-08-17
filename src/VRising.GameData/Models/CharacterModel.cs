@@ -1,7 +1,7 @@
-﻿using GT.VRising.GameData.Models.Internals;
-using Unity.Entities;
+﻿using Unity.Entities;
+using VRising.GameData.Models.Internals;
 
-namespace GT.VRising.GameData.Models
+namespace VRising.GameData.Models
 {
     public partial class CharacterModel
     {

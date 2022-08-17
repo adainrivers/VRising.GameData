@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GT.VRising.GameData.Models;
 using ProjectM;
 using Unity.Entities;
+using VRising.GameData.Models;
 
-namespace GT.VRising.GameData
+namespace VRising.GameData
 {
     public class Items
     {
@@ -23,7 +23,7 @@ namespace GT.VRising.GameData
             }
             catch (Exception ex)
             {
-                Plugin.Logger.LogError(ex);
+                GameData.Logger.LogError(ex);
             }
 
             return null;
@@ -40,7 +40,7 @@ namespace GT.VRising.GameData
             }
             catch (Exception ex)
             {
-                Plugin.Logger.LogError(ex);
+                GameData.Logger.LogError(ex);
             }
 
             return null;

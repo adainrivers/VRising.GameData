@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using GT.VRising.GameData.Models.Data;
-using GT.VRising.GameData.Models.Internals;
 using ProjectM;
 using Unity.Entities;
+using VRising.GameData.Models.Data;
+using VRising.GameData.Models.Internals;
 
-namespace GT.VRising.GameData.Models;
+namespace VRising.GameData.Models;
 
 public class InventoryModel
 {

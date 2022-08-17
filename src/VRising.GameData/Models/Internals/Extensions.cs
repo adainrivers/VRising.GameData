@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using ProjectM;
 using Unity.Entities;
 
-namespace GT.VRising.GameData.Models.Internals
+namespace VRising.GameData.Models.Internals
 {
     internal static class Extensions
     {
