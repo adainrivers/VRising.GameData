@@ -13,7 +13,6 @@
 
     <ServerPath>D:\SteamLibrary\steamapps\common\VRising\VRising_Server</ServerPath>
     <ClientPath>D:\SteamLibrary\steamapps\common\VRising</ClientPath>
-    <UnhollowedDllsPath>$(ServerPath)\BepinEx\unhollowed</UnhollowedDllsPath>
 
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Description>An extensible framework to access V Rising ECS data</Description>
@@ -47,120 +46,6 @@
   <ItemGroup>
     <PackageReference Include="BepInEx.IL2CPP" Version="6.0.0-*" IncludeAssets="compile" />
     <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Il2CppSystem">
-      <HintPath>$(UnhollowedDllsPath)\Il2CppSystem.dll</HintPath>
-    </Reference>
-    <Reference Include="Il2CppSystem.Core">
-      <HintPath>$(UnhollowedDllsPath)\Il2CppSystem.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Il2CppSystem.Numerics">
-      <HintPath>$(UnhollowedDllsPath)\Il2CppSystem.Numerics.dll</HintPath>
-    </Reference>
-    <!--<Reference Include="Newtonsoft.Json">
-		  <HintPath>$(UnhollowedDllsPath)\Newtonsoft.Json.dll</HintPath>
-		</Reference>-->
-    <Reference Include="ProjectM.Behaviours">
-      <HintPath>$(UnhollowedDllsPath)\ProjectM.Behaviours.dll</HintPath>
-    </Reference>
-    <Reference Include="ProjectM.Camera">
-      <HintPath>$(UnhollowedDllsPath)\ProjectM.Camera.dll</HintPath>
-    </Reference>
-    <Reference Include="ProjectM.CastleBuilding.Systems">
-      <HintPath>$(UnhollowedDllsPath)\ProjectM.CastleBuilding.Systems.dll</HintPath>
-    </Reference>
-    <Reference Include="ProjectM.Conversion">
-      <HintPath>$(UnhollowedDllsPath)\ProjectM.Conversion.dll</HintPath>
-    </Reference>
-    <Reference Include="ProjectM.Gameplay.Scripting">
-      <HintPath>$(UnhollowedDllsPath)\ProjectM.Gameplay.Scripting.dll</HintPath>
-    </Reference>
-    <Reference Include="ProjectM.Gameplay.Systems">
-      <HintPath>$(UnhollowedDllsPath)\ProjectM.Gameplay.Systems.dll</HintPath>
-    </Reference>
-    <Reference Include="ProjectM.GeneratedNetCode">
-      <HintPath>$(UnhollowedDllsPath)\ProjectM.GeneratedNetCode.dll</HintPath>
-    </Reference>
-    <Reference Include="ProjectM.Misc.Systems">
-      <HintPath>$(UnhollowedDllsPath)\ProjectM.Misc.Systems.dll</HintPath>
-    </Reference>
-    <Reference Include="ProjectM.Pathfinding">
-      <HintPath>$(UnhollowedDllsPath)\ProjectM.Pathfinding.dll</HintPath>
-    </Reference>
-    <Reference Include="ProjectM.Presentation.Systems">
-      <HintPath>$(UnhollowedDllsPath)\ProjectM.Presentation.Systems.dll</HintPath>
-    </Reference>
-    <Reference Include="ProjectM.Roofs">
-      <HintPath>$(UnhollowedDllsPath)\ProjectM.Roofs.dll</HintPath>
-    </Reference>
-    <Reference Include="ProjectM.Shared">
-      <HintPath>$(UnhollowedDllsPath)\ProjectM.Shared.dll</HintPath>
-    </Reference>
-
-    <Reference Include="IL2Cppmscorlib">
-      <HintPath>$(UnhollowedDllsPath)\Il2Cppmscorlib.dll</HintPath>
-    </Reference>
-
-    <Reference Include="ProjectM">
-      <HintPath>$(UnhollowedDllsPath)\ProjectM.dll</HintPath>
-    </Reference>
-
-    <Reference Include="com.stunlock.network">
-      <HintPath>$(UnhollowedDllsPath)\com.stunlock.network.dll</HintPath>
-    </Reference>
-
-    <Reference Include="ProjectM.Terrain">
-      <HintPath>$(UnhollowedDllsPath)\ProjectM.Terrain.dll</HintPath>
-    </Reference>
-
-    <Reference Include="Sequencer">
-      <HintPath>$(UnhollowedDllsPath)\Sequencer.dll</HintPath>
-    </Reference>
-
-    <Reference Include="Unity.Collections">
-      <HintPath>$(UnhollowedDllsPath)\Unity.Collections.dll</HintPath>
-    </Reference>
-
-    <Reference Include="Unity.Entities">
-      <HintPath>$(UnhollowedDllsPath)\Unity.Entities.dll</HintPath>
-    </Reference>
-
-    <Reference Include="ProjectM.HUD">
-      <HintPath>$(UnhollowedDllsPath)\ProjectM.HUD.dll</HintPath>
-    </Reference>
-
-    <Reference Include="Unity.Mathematics">
-      <HintPath>$(UnhollowedDllsPath)\Unity.Mathematics.dll</HintPath>
-    </Reference>
-
-    <Reference Include="Unity.Physics">
-      <HintPath>$(UnhollowedDllsPath)\Unity.Physics.dll</HintPath>
-    </Reference>
-
-    <Reference Include="Unity.Scenes">
-      <HintPath>$(UnhollowedDllsPath)\Unity.Scenes.dll</HintPath>
-    </Reference>
-
-    <Reference Include="Unity.Transforms">
-      <HintPath>$(UnhollowedDllsPath)\Unity.Transforms.dll</HintPath>
-    </Reference>
-
-    <Reference Include="UnityEngine">
-      <HintPath>$(UnhollowedDllsPath)\UnityEngine.dll</HintPath>
-    </Reference>
-
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>$(UnhollowedDllsPath)\UnityEngine.CoreModule.dll</HintPath>
-    </Reference>
-
-    <Reference Include="ProjectM.CodeGeneration">
-      <HintPath>$(UnhollowedDllsPath)\ProjectM.CodeGeneration.dll</HintPath>
-    </Reference>
-
-
-    <Reference Include="Stunlock.Core">
-      <HintPath>$(UnhollowedDllsPath)\Stunlock.Core.dll</HintPath>
-    </Reference>
+    <PackageReference Include="VRising.Unhollowed.Client" Version="0.5.*" />
   </ItemGroup>
 </Project>
