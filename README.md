@@ -10,6 +10,12 @@ Install the NuGet package `VRising.GameData`
 
 Add the following lines to your plugin's .csproj file:
 
+To the `PropertyGroup`:
+```xml
+<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+```
+
+To the references `ItemGroup`:
 ```xml
 <PackageReference Include="Fody" Version="6.6.3">
     <PrivateAssets>all</PrivateAssets>
@@ -22,17 +28,23 @@ And update the FodyWeavers.xml to look like this:
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <Weavers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="FodyWeavers.xsd">
-  <ILMerge>
-    <IncludeAssemblies>VRising.GameData</IncludeAssemblies>
+  <ILMerge NamespacePrefix="PluginName_" IncludeAssemblies="VRising.GameData">
   </ILMerge>
 </Weavers>
 ```
 
-If you have more assemblies to add, separate the with the pipe `|` character.
+Replace `PluginName` with your plugin's name. If you have more assemblies to add, separate the with the pipe `|` character. For example:
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<Weavers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="FodyWeavers.xsd">
+  <ILMerge NamespacePrefix="RandomEncounters_" IncludeAssemblies="VRising.GameData|Wetstone">
+  </ILMerge>
+</Weavers>
+```
 
 ## Usage
 
-- Optionally, add the following to your Plugin's `Load()` method. You shouldn't access any of the `GameData` properties before initialization is done.: 
+Optionally, add the following to your Plugin's `Load()` method. You shouldn't access any of the `GameData` properties before initialization is done.: 
 
 ```csharp
 public override void Load()
@@ -63,7 +75,7 @@ private static void GameDataOnInitialize(World world)
     }
 }
 ```
-- Remove the event hook in your plugin's `Unload()` method:
+Remove the event hook in your plugin's `Unload()` method:
 
 ```csharp
 public override bool Unload()

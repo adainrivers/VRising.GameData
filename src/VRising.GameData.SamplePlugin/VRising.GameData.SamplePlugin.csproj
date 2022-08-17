@@ -11,6 +11,7 @@
     </RestoreSources>
     <ServerPath>D:\SteamLibrary\steamapps\common\VRising\VRising_Server</ServerPath>
     <ClientPath>D:\SteamLibrary\steamapps\common\VRising</ClientPath>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="BepInEx.IL2CPP" Version="6.0.0-*" IncludeAssets="compile" />
