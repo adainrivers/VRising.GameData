@@ -17,10 +17,8 @@ To the `PropertyGroup`:
 
 To the references `ItemGroup`:
 ```xml
-<PackageReference Include="Fody" Version="6.6.3">
-    <PrivateAssets>all</PrivateAssets>
-</PackageReference>
-<PackageReference Include="ILMerge.Fody" Version="1.23.0" />
+<PackageReference Include="Fody" Version="6.6.3" PrivateAssets="all" />
+<PackageReference Include="ILMerge.Fody" Version="1.23.0" PrivateAssets="all" />
 ```
 
 And update the FodyWeavers.xml to look like this:
