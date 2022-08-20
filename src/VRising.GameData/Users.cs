@@ -10,10 +10,17 @@ namespace VRising.GameData;
 
 public class Users
 {
+    internal static ulong CurrentUserSteamId { get; set; }
+
     private Users() { }
 
     private static Users _instance;
     internal static Users Instance => _instance ??= new Users();
+
+    public UserModel GetCurrentUser()
+    {
+        return GetUserByPlatformId(CurrentUserSteamId);
+    }
 
     public UserModel GetUserByPlatformId(ulong platformId)
     {

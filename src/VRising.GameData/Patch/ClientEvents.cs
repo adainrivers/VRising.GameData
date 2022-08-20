@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using HarmonyLib;
 using ProjectM;
+using ProjectM.Auth;
 
 namespace VRising.GameData.Patch;
 
@@ -41,9 +42,24 @@ internal class ClientEvents
     [HarmonyPostfix]
     private static void ClientBootstrapSystemOnDestroyPostfix(ClientBootstrapSystem __instance)
     {
+        _onGameDataInitializedTriggered = false;
         try
         {
             OnGameDataDestroyed?.Invoke();
+        }
+        catch (Exception ex)
+        {
+            GameData.Logger.LogError(ex);
+        }
+    }
+
+    [HarmonyPatch(typeof(SteamPlatformSystem), "TryInitClient")]
+    [HarmonyPostfix]
+    private static void SteamPlatformSystemOnTryInitClientPostfix(SteamPlatformSystem __instance)
+    {
+        try
+        {
+            Users.CurrentUserSteamId = __instance.UserID;
         }
         catch (Exception ex)
         {

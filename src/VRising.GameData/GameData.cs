@@ -43,6 +43,8 @@ public static class GameData
 
     internal static ManualLogSource Logger = BepInEx.Logging.Logger.CreateLogSource("VRising.GameData");
 
+    public static bool Initialized => _worldDataInitialized;
+
     internal static void Create()
     {
         if (_initialized)

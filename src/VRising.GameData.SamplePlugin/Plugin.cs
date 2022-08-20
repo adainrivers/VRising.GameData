@@ -41,6 +41,7 @@ namespace VRising.GameData.SamplePlugin
             {
                 Logger.LogMessage($"{itemModel.Name}");
             }
+
         }
 
         public override bool Unload()
