@@ -2,7 +2,7 @@
 
 # VRising Game Data Library
 
-See [V Rising Database](https://gaming.tools/v-rising) for detailed information about V Rising items, NPCs and more.
+See [V Rising Database](https://risingdb.com) for detailed information about V Rising items, NPCs and more.
 
 ## Installation
 
